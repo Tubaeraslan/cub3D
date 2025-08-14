@@ -23,7 +23,7 @@ void    player_position(t_player *player)
         player->planeX = 0;
         player->planeY = player->fov;
     }
-    else if(player->start_pos == "W")
+    else if(player->start_pos == 'W')
     {
         player->dirX = -1;
         player->dirY = 0;
