@@ -3,6 +3,7 @@
 
 #include "stdlib.h"
 #include "math.h"
+#include "./minilibx_opengl_20191021/mlx.h"
 
 #define screenWidth 640
 #define screenHeight 480
@@ -38,6 +39,8 @@ typedef struct s_data
 {
 	char	**map;
 	t_player *player;
+	void	*mlx;   // Eklendi
+    void	*win;
 }	t_data;
 
 void	player_position(t_player *player);

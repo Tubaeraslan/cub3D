@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 #include <stdio.h>
-static void find_wall_dist(t_player *player)
+static void find_wall_dist(t_player *player, int x)
 {
 	double wallDist;
 	int lineHeight;
@@ -24,6 +24,10 @@ static void find_wall_dist(t_player *player)
     	wallDist = (player->mapX - player->posX + (1 - player->stepX) / 2.0) / player->rayDirX;
 	else
     	wallDist = (player->mapY - player->posY + (1 - player->stepY) / 2.0) / player->rayDirY;
+	if (wallDist <= 0.01 || isnan(wallDist) || isinf(wallDist)) {
+    printf("x: %d, wallDist: %f (skip)\n", x, wallDist);
+    return;
+	}
 	lineHeight = (int)(screenHeight / wallDist);
 	drawStart = -lineHeight / 2 + screenHeight / 2;
 	if (drawStart < 0)
@@ -32,11 +36,12 @@ static void find_wall_dist(t_player *player)
 	if (drawEnd >= screenHeight)
     	drawEnd = screenHeight - 1;
 	i = drawStart;
-	// while (i < drawEnd)
-	// {
-	// 	//mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0xFFFFFF);
-	// 	//i++;
-	// }
+	printf("x: %d, drawStart: %d, drawEnd: %d\n", x, drawStart, drawEnd);
+	while (i < drawEnd)
+	{
+		mlx_pixel_put(player->data->mlx, player->data->win, x, i, 0xFFFFFF);
+		i++;
+	}
 	
 }
 
@@ -53,7 +58,7 @@ static int hit_wall(t_player *player)
     return 0;
 }
 
-static void perform_dda(t_player *player)
+static void perform_dda(t_player *player, int x)
 {
 	while (player->hit == 0)
 	{
@@ -74,10 +79,10 @@ static void perform_dda(t_player *player)
 			player->hit = 1;
 		}
 	}
-	find_wall_dist(player);
+	find_wall_dist(player,x);
 }
 
-static void	find_ray(t_player *player)
+static void	find_ray(t_player *player,int x)
 {
 	player->hit = 0;
 	if (player->rayDirX < 0)
@@ -100,11 +105,11 @@ static void	find_ray(t_player *player)
 		player->stepY = 1;
         player->sideDistY = (player->mapY + 1.0 - player->posY) * player->deltaDistY;
 	}
-	perform_dda(player);
+	perform_dda(player,x);
 	
 }
 
-static void	dda_algorithm(t_player *player)
+static void	dda_algorithm(t_player *player,int x)
 {
 	player->mapX = (int)player->posX;
 	player->mapY = (int)player->posY;
@@ -116,7 +121,8 @@ static void	dda_algorithm(t_player *player)
 		player->deltaDistY = 1e30;
 	else
 		player->deltaDistY = fabs(1.0 / player->rayDirY);
-	find_ray(player);
+	printf("DDA: mapX=%d, mapY=%d, hit=%d, mapVal=%c\n", player->mapX, player->mapY, player->hit, player->data->map[player->mapY][player->mapX]);
+	find_ray(player,x);
 }
 
 void	raycasting(t_player *player)
@@ -133,7 +139,7 @@ void	raycasting(t_player *player)
 		cameraX = 2 * (double)x / (double)w - 1.0;
 		player->rayDirX = player->dirX + player->planeX * cameraX;
 		player->rayDirY = player->dirY + player->planeY * cameraX;
-		dda_algorithm(player);
+		dda_algorithm(player,x);
 		if (x % 100 == 0)
         	printf("Ray %d dir: (%f, %f)\n", x, player->rayDirX, player->rayDirY);
 		x++;

@@ -1,15 +1,15 @@
 NAME = cub3d
-CFLAGS = -Wall -Wextra -Werror -g
 CC = cc
 
 SRC = main.c player_position.c raycasting.c
+LIBS = -L./minilibx_opengl_20191021 -lmlx -framework OpenGL -framework AppKit
 
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) -o $(NAME)
+	$(CC) $(OBJ) -o $(NAME) $(LIBS)
 
 clean:
 	rm -f $(OBJ)

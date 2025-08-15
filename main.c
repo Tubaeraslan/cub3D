@@ -2,7 +2,7 @@
 #include <stdio.h>
 int main()
 {
-	 t_data *data;
+	t_data *data;
 
     data = malloc(sizeof(t_data));
     if (!data)
@@ -17,10 +17,10 @@ int main()
 
 	char *map_example[] = {
     "1111111111",
+    "1010000101",
     "1000000001",
-    "1000000001",
-    "1000000001",
-    "1000000001",
+    "1010000001",
+    "1010000001",
     "1111111111",
     NULL
 	};
@@ -48,6 +48,8 @@ int main()
 	planeY = dirX * tan(FOV / 2)
 	*/
 	player_position(data->player);
+	data->mlx = mlx_init();
+    data->win = mlx_new_window(data->mlx, screenWidth, screenHeight, "cub3d");
 	//raycasting
 	/*
 		her dikey piksel çizgisi için ray gönder
@@ -61,6 +63,7 @@ int main()
 	*/
 	//ışın gönderme kameranın sol ucundan sağ ucuna yayılır
 	//kontrolleri ayarla wsad
+	mlx_loop(data->mlx);
 	printf("Player position: (%f, %f)\n", data->player->posX, data->player->posY);
 	printf("Player direction: (%f, %f)\n", data->player->dirX, data->player->dirY);
 	return 0;
