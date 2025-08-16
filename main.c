@@ -19,14 +19,15 @@ int main()
     "1111111111",
     "1010000101",
     "1000000001",
-    "1010000001",
-    "1010000001",
+    "1010100001",
+    "1010000011",
     "1111111111",
     NULL
 	};
+	data->player->hit = 0;
 	data->map = map_example;
-	data->player->posX = 2;
-	data->player->posY = 2;
+	data->player->posX = 3.5;
+	data->player->posY = 3.5;
 	data->player->start_pos = 'N';
 	data->player->mapX=2;
 	data->player->mapY=2;

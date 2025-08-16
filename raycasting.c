@@ -21,10 +21,9 @@ static void find_wall_dist(t_player *player, int x)
 	int i;
 
 	if (player->side == 0)
-    	wallDist = (player->mapX - player->posX + (1 - player->stepX) / 2.0) / player->rayDirX;
+		wallDist = fabs((player->mapX - player->posX + (1 - player->stepX) / 2.0) / player->rayDirX);
 	else
-    	wallDist = (player->mapY - player->posY + (1 - player->stepY) / 2.0) / player->rayDirY;
-	if (wallDist <= 0.01 || isnan(wallDist) || isinf(wallDist)) {
+		wallDist = fabs((player->mapY - player->posY + (1 - player->stepY) / 2.0) / player->rayDirY);	if (wallDist <= 0.01 || isnan(wallDist) || isinf(wallDist)) {
     printf("x: %d, wallDist: %f (skip)\n", x, wallDist);
     return;
 	}
@@ -47,19 +46,21 @@ static void find_wall_dist(t_player *player, int x)
 
 static int hit_wall(t_player *player)
 {
-    // Sınır kontrolü
-    if (player->mapY < 0 || player->mapY >= 6) // map satır sayısı
+    if (player->mapY < 0 || player->mapY >= 6 || player->mapX < 0 || player->mapX >= 10)
         return 1;
-    if (player->mapX < 0 || player->mapX >= 10) // map sütun sayısı
+
+    char cell = player->data->map[player->mapY][player->mapX];
+    if (cell == '1')
         return 1;
-    
-    if (player->data->map[player->mapY][player->mapX] == '1')
-        return 1;
+
     return 0;
 }
 
+
+
 static void perform_dda(t_player *player, int x)
 {
+	// DDA algoritması: duvara çarpana kadar ilerle
 	while (player->hit == 0)
 	{
 		if (player->sideDistX < player->sideDistY)
@@ -79,11 +80,14 @@ static void perform_dda(t_player *player, int x)
 			player->hit = 1;
 		}
 	}
-	find_wall_dist(player,x);
+	// Sadece duvara çarpınca çizim yap
+	if (player->hit == 1)
+		find_wall_dist(player, x);
 }
 
 static void	find_ray(t_player *player,int x)
 {
+	// Her ışın için hit sıfırlanmalı
 	player->hit = 0;
 	if (player->rayDirX < 0)
 	{
@@ -93,20 +97,19 @@ static void	find_ray(t_player *player,int x)
 	else
 	{
 		player->stepX = 1;
-		player->sideDistX = (player->mapX + 1.0 -player->posX) * player->deltaDistX;
+		player->sideDistX = (player->mapX + 1.0 - player->posX) * player->deltaDistX;
 	}
 	if (player->rayDirY < 0)
 	{
 		player->stepY = -1;
-        player->sideDistY = (player->posY - player->mapY) * player->deltaDistY;
+		player->sideDistY = (player->posY - player->mapY) * player->deltaDistY;
 	}
 	else
 	{
 		player->stepY = 1;
-        player->sideDistY = (player->mapY + 1.0 - player->posY) * player->deltaDistY;
+		player->sideDistY = (player->mapY + 1.0 - player->posY) * player->deltaDistY;
 	}
-	perform_dda(player,x);
-	
+	perform_dda(player, x);
 }
 
 static void	dda_algorithm(t_player *player,int x)
@@ -132,7 +135,7 @@ void	raycasting(t_player *player)
 	double cameraX;
 
 	x = 0;
-	w = (double)screenWidth;
+	w = screenWidth;
 	//ışın pozisyonu ve yönü hesaplama
 	while (x < w)
 	{
