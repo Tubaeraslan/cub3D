@@ -41,6 +41,14 @@ typedef struct s_data
 	t_player *player;
 	void	*mlx;   // Eklendi
     void	*win;
+	int map_width;
+	int map_height;
+	void *tex_north;
+    void *tex_south;
+    void *tex_east;
+    void *tex_west;
+	int text_width;
+	int text_height;
 }	t_data;
 
 void	player_position(t_player *player);

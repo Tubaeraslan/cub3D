@@ -1,5 +1,41 @@
 #include "cub3d.h"
 #include <stdio.h>
+
+void	load_textures(t_data *data)
+{
+    data->tex_north = mlx_xpm_file_to_image(data->mlx, "./textures/north.xpm", &data->text_width, &data->text_height);
+    data->tex_south = mlx_xpm_file_to_image(data->mlx, "./textures/south.xpm", &data->text_width, &data->text_height);
+    data->tex_east  = mlx_xpm_file_to_image(data->mlx, "./textures/east.xpm",  &data->text_width, &data->text_height);
+    data->tex_west  = mlx_xpm_file_to_image(data->mlx, "./textures/west.xpm",  &data->text_width, &data->text_height);
+}
+
+int	key_press(int keycode, t_data *data)
+{
+    double newX = data->player->posX;
+    double newY = data->player->posY;
+
+    if (keycode == 53) // ESC tuşu
+        exit(0);
+    if (keycode == 13) // W
+        newY -= 0.1;
+    if (keycode == 1) // S
+        newY += 0.1;
+    if (keycode == 0) // A
+        newX -= 0.1;
+    if (keycode == 2) // D
+        newX += 0.1;
+
+    // Harita sınırı ve duvar kontrolü
+    if (data->map[(int)newY][(int)newX] != '1')
+    {
+        data->player->posX = newX;
+        data->player->posY = newY;
+    }
+    // Ekranı tekrar çiz
+    raycasting(data->player);
+    return (0);
+}
+
 int main()
 {
 	t_data *data;
@@ -14,16 +50,19 @@ int main()
 
     data->player->data = data;
     data->player->fov = 0.66;
-
 	char *map_example[] = {
     "1111111111",
     "1010000101",
-    "1000000001",
+    "1000100001",
     "1010100001",
     "1010000011",
     "1111111111",
     NULL
 	};
+	int map_width = 10;
+	int map_height = 6;
+	data->map_width = map_width;
+	data->map_height = map_height;
 	data->player->hit = 0;
 	data->map = map_example;
 	data->player->posX = 3.5;
@@ -31,6 +70,8 @@ int main()
 	data->player->start_pos = 'N';
 	data->player->mapX=2;
 	data->player->mapY=2;
+	data->text_width = 0;
+	data->text_height = 0;
 	//map okuma parser
 	//map doğrulama
 	//minilibx hazırlama
@@ -51,6 +92,8 @@ int main()
 	player_position(data->player);
 	data->mlx = mlx_init();
     data->win = mlx_new_window(data->mlx, screenWidth, screenHeight, "cub3d");
+	load_textures(data);
+	mlx_key_hook(data->win, key_press, data);
 	//raycasting
 	/*
 		her dikey piksel çizgisi için ray gönder
@@ -59,6 +102,7 @@ int main()
 		texture koordinatlarını hesapla
 	*/
 	raycasting(data->player);
+	mlx_loop(data->mlx);
 	/*
 	eğer player sağa bakıyosa dirX=1 dirY=0. planeX=0 planeY = 0.66(fov genişliği)
 	*/

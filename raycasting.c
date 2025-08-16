@@ -19,6 +19,12 @@ static void find_wall_dist(t_player *player, int x)
 	int drawStart;
 	int drawEnd;
 	int i;
+	void *texture;
+	int *text_data;
+	int bpp, size_line, endian;
+	int tex_x, tex_y;
+	double wallX;
+	int color;
 
 	if (player->side == 0)
 		wallDist = fabs((player->mapX - player->posX + (1 - player->stepX) / 2.0) / player->rayDirX);
@@ -34,25 +40,44 @@ static void find_wall_dist(t_player *player, int x)
 	drawEnd = lineHeight / 2 + screenHeight / 2;
 	if (drawEnd >= screenHeight)
     	drawEnd = screenHeight - 1;
-	i = drawStart;
+	if (player->side == 0 && player->rayDirX > 0)
+        texture = player->data->tex_east;
+    else if (player->side == 0 && player->rayDirX < 0)
+        texture = player->data->tex_west;
+    else if (player->side == 1 && player->rayDirY > 0)
+        texture = player->data->tex_south;
+    else
+        texture = player->data->tex_north;
+	// Duvarın çarpma noktasını bul
+	if (player->side == 0)
+        wallX = player->posY + wallDist * player->rayDirY;
+    else
+        wallX = player->posX + wallDist * player->rayDirX;
+    wallX -= floor(wallX);
+	tex_x = (int)(wallX * (double)player->data->text_width);
+    if ((player->side == 0 && player->rayDirX > 0) || (player->side == 1 && player->rayDirY < 0))
+        tex_x = player->data->text_width - tex_x - 1;
+
+    text_data = (int *)mlx_get_data_addr(texture, &bpp, &size_line, &endian);
 	printf("x: %d, drawStart: %d, drawEnd: %d\n", x, drawStart, drawEnd);
-	while (i < drawEnd)
-	{
-		mlx_pixel_put(player->data->mlx, player->data->win, x, i, 0xFFFFFF);
-		i++;
-	}
+	for (i = drawStart; i < drawEnd; i++)
+    {
+        int d = i * 256 - screenHeight * 128 + lineHeight * 128;
+        tex_y = ((d * player->data->text_height) / lineHeight) / 256;
+        color = text_data[tex_y * player->data->text_width + tex_x];
+        mlx_pixel_put(player->data->mlx, player->data->win, x, i, color);
+    }
 	
 }
 
 static int hit_wall(t_player *player)
 {
-    if (player->mapY < 0 || player->mapY >= 6 || player->mapX < 0 || player->mapX >= 10)
+    if (player->mapY < 0 || player->mapY >= player->data->map_height)
+    	return 1;
+	if (player->mapX < 0 || player->mapX >= player->data->map_width)
+    	return 1;
+	if (player->data->map[player->mapY][player->mapX] == '1')
         return 1;
-
-    char cell = player->data->map[player->mapY][player->mapX];
-    if (cell == '1')
-        return 1;
-
     return 0;
 }
 
