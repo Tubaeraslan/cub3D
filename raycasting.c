@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 15:16:29 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/17 15:16:25 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/17 16:06:15 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,6 @@ static void side_ray(t_player *player)
 		player->stepY = 1;
 		player->sideDistY = (player->mapY + 1.0 - player->posY) * player->deltaDistY;
 	}
-}
-
-static void background(int *img_data,int size_line)
-{
-	int x;
-	int y;
-	// Arka planı siyah yap (isteğe bağlı)
-	for (y = 0; y < screenHeight; y++)
-		for (x = 0; x < screenWidth; x++)
-			img_data[y * (size_line / 4) + x] = 0x000000;
 }
 
 static void dda_algorithm(t_player *player)
@@ -138,12 +128,14 @@ static void draw_wall_line(t_data *data, int *img_data, int size_line, t_draw dr
 		texX = data->text_width - texX - 1;
 	step = 1.0 * data->text_height / (draw.drawEnd - draw.drawStart);
 	texPos = (draw.drawStart - screenHeight / 2 + (draw.drawEnd - draw.drawStart) / 2) * step;
-	for (int y = draw.drawStart; y < draw.drawEnd; y++)
+	int y = draw.drawStart;
+	while (y < draw.drawEnd)
 	{
 		int texY = (int)texPos & (data->text_height - 1);
 		texPos += step;
 		int color = tex_data[texY * (data->size_line / 4) + texX];
 		img_data[y * (size_line / 4) + draw.x] = color;
+		y++;
 	}
 }
 
@@ -158,7 +150,6 @@ void raycasting(t_player *player, int *img_data, int size_line)
 
 	w = screenWidth;
 	x = 0;
-	background(img_data,size_line);
 	while (x < w)
 	{
 		cameraX = 2 * (double)x / (double)w - 1.0;
@@ -173,6 +164,20 @@ void raycasting(t_player *player, int *img_data, int size_line)
 		if (drawStart < 0) drawStart = 0;
 		int drawEnd = lineHeight / 2 + screenHeight / 2;
 		if (drawEnd >= screenHeight) drawEnd = screenHeight - 1;
+		// gökyüzü
+		int y = 0;
+		while (y < drawStart)
+		{
+			img_data[y * (size_line / 4) + x] = 0x87CEEB;
+			y++;
+		}
+		// zemin
+		y = drawEnd;
+		while (y < screenHeight)
+		{
+			img_data[y * (size_line / 4) + x] = 0x444444;
+			y++;
+		}
 		draw.x = x;
 		draw.drawStart = drawStart;
 		draw.drawEnd = drawEnd;
