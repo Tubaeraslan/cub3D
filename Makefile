@@ -1,20 +1,25 @@
 NAME = cub3d
-CC = cc
+CFLAGS = -Wall -Wextra -Werror
+
+MLX_DIR = minilibx-linux
+MLX_LIB = $(MLX_DIR)/libmlx.a
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 SRC = main.c player_position.c raycasting.c
-LIBS = -L./minilibx_opengl_20191021 -lmlx -framework OpenGL -framework AppKit
-
-OBJ = $(SRC:.c=.o)
+OBJS = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME) : $(OBJ)
-	$(CC) $(OBJ) -o $(NAME) $(LIBS)
+$(NAME): $(OBJS)
+	make -C $(MLX_DIR) 
+	cc $(CFLAGS) $(OBJS) $(MLX_LIB) $(MLX_FLAGS) -o $(NAME)
 
 clean:
-	rm -f $(OBJ)
+	make clean -C $(MLX_DIR)
+	rm -f $(OBJS)
 
 fclean: clean
+	make clean -C $(MLX_DIR)
 	rm -f $(NAME)
 
 re: fclean all

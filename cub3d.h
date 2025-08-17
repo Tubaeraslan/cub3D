@@ -3,12 +3,25 @@
 
 #include "stdlib.h"
 #include "math.h"
-#include "./minilibx_opengl_20191021/mlx.h"
+#include "./minilibx-linux/mlx.h"
 
 #define screenWidth 640
 #define screenHeight 480
 
+
+#ifndef M_PI
+# define M_PI 3.14159265358979323846
+#endif
+
 struct s_data;
+
+typedef struct s_draw
+{
+	int x;
+	int drawStart;
+	int drawEnd;
+	double wall_dist;
+} t_draw;
 
 typedef struct s_player
 {
@@ -32,6 +45,7 @@ typedef struct s_player
 	double sideDistY;
 	int hit;
 	int side;
+	t_draw	draw;
 	struct s_data *data;
 }   t_player;
 
@@ -40,17 +54,21 @@ typedef struct s_data
 	char	**map;
 	t_player *player;
 	void	*mlx;   // Eklendi
-    void	*win;
+	void	*win;
 	int map_width;
 	int map_height;
 	void *tex_north;
-    void *tex_south;
-    void *tex_east;
-    void *tex_west;
+	void *tex_south;
+	void *tex_east;
+	void *tex_west;
+	int		*img_data;     // eklendi
+	int		size_line;     // eklendi
+	int		bpp;           // eklendi
+	int		endian;        // eklendi
 	int text_width;
 	int text_height;
 }	t_data;
 
 void	player_position(t_player *player);
-void	raycasting(t_player *player);
+void	raycasting(t_player *player, int *img_data, int size_line);
 #endif
