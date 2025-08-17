@@ -71,4 +71,5 @@ typedef struct s_data
 
 void	player_position(t_player *player);
 void	raycasting(t_player *player, int *img_data, int size_line);
+void draw_image(t_data *data);
 #endif

@@ -1,6 +1,75 @@
 #include "cub3d.h"
 #include <stdio.h>
 
+int	key_hook(int keycode, t_data *data)
+{
+	// Linux: W=119, S=115, A=97, D=100, ESC=65307
+	double moveSpeed = 0.1;
+	if (keycode == 65307) // ESC
+		exit(0);
+	if (keycode == 119) // W
+	{
+		double newX = data->player->posX + data->player->dirX * moveSpeed;
+		double newY = data->player->posY + data->player->dirY * moveSpeed;
+		if (data->map[(int)newY][(int)newX] != '1')
+		{
+			data->player->posX = newX;
+			data->player->posY = newY;
+		}
+	}
+	if (keycode == 115) // S
+	{
+		double newX = data->player->posX - data->player->dirX * moveSpeed;
+		double newY = data->player->posY - data->player->dirY * moveSpeed;
+		if (data->map[(int)newY][(int)newX] != '1')
+		{
+			data->player->posX = newX;
+			data->player->posY = newY;
+		}
+	}
+	if (keycode == 97) // A (sola strafe)
+	{
+		double newX = data->player->posX - data->player->planeX * moveSpeed;
+		double newY = data->player->posY - data->player->planeY * moveSpeed;
+		if (data->map[(int)newY][(int)newX] != '1')
+		{
+			data->player->posX = newX;
+			data->player->posY = newY;
+		}
+	}
+	if (keycode == 100) // D (sağa strafe)
+	{
+		double newX = data->player->posX + data->player->planeX * moveSpeed;
+		double newY = data->player->posY + data->player->planeY * moveSpeed;
+		if (data->map[(int)newY][(int)newX] != '1')
+		{
+			data->player->posX = newX;
+			data->player->posY = newY;
+		}
+	}
+	double rotSpeed = 0.08;
+	if (keycode == 65363) // Sağ ok tuşu (right arrow)
+	{
+		double oldDirX = data->player->dirX;
+		data->player->dirX = data->player->dirX * cos(rotSpeed) - data->player->dirY * sin(rotSpeed);
+		data->player->dirY = oldDirX * sin(rotSpeed) + data->player->dirY * cos(rotSpeed);
+		double oldPlaneX = data->player->planeX;
+		data->player->planeX = data->player->planeX * cos(rotSpeed) - data->player->planeY * sin(rotSpeed);
+		data->player->planeY = oldPlaneX * sin(rotSpeed) + data->player->planeY * cos(rotSpeed);
+	}
+	if (keycode == 65361) // Sol ok tuşu (left arrow)
+	{
+		double oldDirX = data->player->dirX;
+		data->player->dirX = data->player->dirX * cos(-rotSpeed) - data->player->dirY * sin(-rotSpeed);
+		data->player->dirY = oldDirX * sin(-rotSpeed) + data->player->dirY * cos(-rotSpeed);
+		double oldPlaneX = data->player->planeX;
+		data->player->planeX = data->player->planeX * cos(-rotSpeed) - data->player->planeY * sin(-rotSpeed);
+		data->player->planeY = oldPlaneX * sin(-rotSpeed) + data->player->planeY * cos(-rotSpeed);
+	}
+	draw_image(data); // Ekranı güncelle
+	return (0);
+}
+
 void	load_textures(t_data *data)
 {
 	data->tex_north = mlx_xpm_file_to_image(data->mlx, "./textures/north.xpm", &data->text_width, &data->text_height);
@@ -89,6 +158,7 @@ int main()
 	player_position(data->player);
 	data->mlx = mlx_init();
 	data->win = mlx_new_window(data->mlx, screenWidth, screenHeight, "cub3d");
+	mlx_key_hook(data->win, key_hook, data);
 	load_textures(data);
 	//mlx_key_hook(data->win, key_press, data);
 	//raycasting
