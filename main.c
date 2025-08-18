@@ -11,7 +11,7 @@ int	key_hook(int keycode, t_data *data)
 	{
 		double newX = data->player->posX + data->player->dirX * moveSpeed;
 		double newY = data->player->posY + data->player->dirY * moveSpeed;
-		if (data->map[(int)newY][(int)newX] != '1')
+		if (newX >= 0 && newX < data->map_width && newY >= 0 && newY < data->map_height && data->map[(int)newY][(int)newX] != '1')
 		{
 			data->player->posX = newX;
 			data->player->posY = newY;
@@ -21,7 +21,7 @@ int	key_hook(int keycode, t_data *data)
 	{
 		double newX = data->player->posX - data->player->dirX * moveSpeed;
 		double newY = data->player->posY - data->player->dirY * moveSpeed;
-		if (data->map[(int)newY][(int)newX] != '1')
+		if (newX >= 0 && newX < data->map_width && newY >= 0 && newY < data->map_height && data->map[(int)newY][(int)newX] != '1')
 		{
 			data->player->posX = newX;
 			data->player->posY = newY;
@@ -31,7 +31,7 @@ int	key_hook(int keycode, t_data *data)
 	{
 		double newX = data->player->posX - data->player->planeX * moveSpeed;
 		double newY = data->player->posY - data->player->planeY * moveSpeed;
-		if (data->map[(int)newY][(int)newX] != '1')
+		if (newX >= 0 && newX < data->map_width && newY >= 0 && newY < data->map_height && data->map[(int)newY][(int)newX] != '1')
 		{
 			data->player->posX = newX;
 			data->player->posY = newY;
@@ -41,7 +41,7 @@ int	key_hook(int keycode, t_data *data)
 	{
 		double newX = data->player->posX + data->player->planeX * moveSpeed;
 		double newY = data->player->posY + data->player->planeY * moveSpeed;
-		if (data->map[(int)newY][(int)newX] != '1')
+		if (newX >= 0 && newX < data->map_width && newY >= 0 && newY < data->map_height && data->map[(int)newY][(int)newX] != '1')
 		{
 			data->player->posX = newX;
 			data->player->posY = newY;
@@ -102,6 +102,14 @@ void draw_image(t_data *data)
 	mlx_destroy_image(data->mlx, img);
 }
 
+int	exit_program(t_data *data)
+{
+	(void)data;
+    //free
+    exit(0);
+    return (0);
+}
+
 int main()
 {
 	t_data *data;
@@ -158,7 +166,8 @@ int main()
 	player_position(data->player);
 	data->mlx = mlx_init();
 	data->win = mlx_new_window(data->mlx, screenWidth, screenHeight, "cub3d");
-	mlx_key_hook(data->win, key_hook, data);
+	mlx_hook(data->win, 2, 1L<<0, key_hook, data);      // Key press
+	mlx_hook(data->win, 17, 0, exit_program, data);
 	load_textures(data);
 	//mlx_key_hook(data->win, key_press, data);
 	//raycasting

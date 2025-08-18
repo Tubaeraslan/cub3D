@@ -5,8 +5,8 @@
 #include "math.h"
 #include "./minilibx-linux/mlx.h"
 
-#define screenWidth 640
-#define screenHeight 480
+#define screenWidth 1920
+#define screenHeight 1080
 
 
 #ifndef M_PI
