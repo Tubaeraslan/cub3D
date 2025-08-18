@@ -96,7 +96,6 @@ void draw_image(t_data *data)
 		return;
 	}
 	img_data = (int *)mlx_get_data_addr(img, &bpp, &size_line, &endian);
-	// Raycasting fonksiyonunu image buffer ile çağır
 	raycasting(data->player, img_data, size_line);
 	mlx_put_image_to_window(data->mlx, data->win, img, 0, 0);
 	mlx_destroy_image(data->mlx, img);
@@ -116,12 +115,10 @@ int main()
 
 	data = malloc(sizeof(t_data));
 	if (!data)
-		return (1); // malloc hatası
-
-	data->player = malloc(sizeof(t_player)); // burayı eklemelisin
+		return (1);
+	data->player = malloc(sizeof(t_player));
 	if (!data->player)
 		return (1);
-
 	data->player->data = data;
 	data->player->fov = 0.66;
 	char *map_example[] = {
@@ -146,38 +143,12 @@ int main()
 	data->player->mapY=2;
 	data->text_width = 0;
 	data->text_height = 0;
-	//map okuma parser
-	//map doğrulama
-	//minilibx hazırlama
-	//oyuncu pozisyonu doğrulama
-	/*
-	dirX - dirY oyuncunun baktığı yön vektörü
-	planeX - planeY ekranın sağ ve sol kenarlerını temsil eden
-					görüş alanı(FOV)field of view-genelde 66 derece kaul edilir- genişliğini belirleyen vektör
-	plane vektörü dir vektörüne dik (90 derece) döndürülmüş vektördür
-
-	örnek:
-	dirX = cos(angle)
-	dirY = sin(angle)
-
-	planeX = -dirY * tan(FOV / 2)
-	planeY = dirX * tan(FOV / 2)
-	*/
 	player_position(data->player);
 	data->mlx = mlx_init();
 	data->win = mlx_new_window(data->mlx, screenWidth, screenHeight, "cub3d");
 	mlx_hook(data->win, 2, 1L<<0, key_hook, data);      // Key press
 	mlx_hook(data->win, 17, 0, exit_program, data);
 	load_textures(data);
-	//mlx_key_hook(data->win, key_press, data);
-	//raycasting
-	/*
-		her dikey piksel çizgisi için ray gönder
-		ray hangi hücreye çarpana kadar ilerliyo hesapla
-		çarpma mesafesine göre duvar yüksekliği çiz
-		texture koordinatlarını hesapla
-	*/
-	//raycasting(data->player);
 	draw_image(data);
 	mlx_loop(data->mlx);
 	printf("Player position: (%f, %f)\n", data->player->posX, data->player->posY);

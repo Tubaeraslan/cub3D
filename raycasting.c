@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 15:16:29 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/17 16:06:15 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/18 18:55:02 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,9 +161,11 @@ void raycasting(t_player *player, int *img_data, int size_line)
 		wall_dist = find_wall_distance(player);
 		int lineHeight = (int)(screenHeight / wall_dist);
 		int drawStart = -lineHeight / 2 + screenHeight / 2;
-		if (drawStart < 0) drawStart = 0;
+		if (drawStart < 0)
+			drawStart = 0;
 		int drawEnd = lineHeight / 2 + screenHeight / 2;
-		if (drawEnd >= screenHeight) drawEnd = screenHeight - 1;
+		if (drawEnd >= screenHeight)
+			drawEnd = screenHeight - 1;
 		// gökyüzü
 		int y = 0;
 		while (y < drawStart)
