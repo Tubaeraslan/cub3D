@@ -5,13 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/14 15:16:29 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/18 18:55:02 by teraslan         ###   ########.fr       */
+/*   Created: 2025/08/19 14:14:26 by teraslan          #+#    #+#             */
+/*   Updated: 2025/08/19 14:19:32 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <stdio.h>
 
 static void ray_dist(t_player *player)
 {
@@ -53,94 +52,7 @@ static void side_ray(t_player *player)
 	}
 }
 
-static void dda_algorithm(t_player *player)
-{
-	// DDA
-	player->hit = 0;
-	while (player->hit == 0)
-	{
-		if (player->sideDistX < player->sideDistY)
-		{
-			player->sideDistX += player->deltaDistX;
-			player->mapX += player->stepX;
-			player->side = 0;
-		}
-		else
-		{
-			player->sideDistY += player->deltaDistY;
-			player->mapY += player->stepY;
-			player->side = 1;
-		}
-		if (player->mapY < 0 || player->mapY >= player->data->map_height ||
-			player->mapX < 0 || player->mapX >= player->data->map_width ||
-			player->data->map[player->mapY][player->mapX] == '1')
-			player->hit = 1;
-	}
-}
-
-static double find_wall_distance(t_player *player)
-{
-	double perpWallDist;
-	if (player->side == 0)
-		perpWallDist = fabs((player->mapX - player->posX + (1 - player->stepX) / 2.0) / player->rayDirX);
-	else
-		perpWallDist = fabs((player->mapY - player->posY + (1 - player->stepY) / 2.0) / player->rayDirY);
-	return perpWallDist;
-}
-
-void *choose_texture(t_data *data)
-{
-	t_player *p = data->player;
-
-	if (p->side == 0) { // X ekseninde çarpma (dikey duvar)
-		if (p->rayDirX > 0)
-			return data->tex_east;
-		else
-			return data->tex_west;
-	} else {            // Y ekseninde çarpma (yatay duvar)
-		if (p->rayDirY > 0)
-			return data->tex_south;
-		else
-			return data->tex_north;
-	}
-}
-
-static void draw_wall_line(t_data *data, int *img_data, int size_line, t_draw draw)
-{
-	void *tex;
-	int *tex_data;
-	double wallX;
-	int texX;
-	double step;
-	double texPos;
-
-	tex = choose_texture(data);
-	tex_data = (int *)mlx_get_data_addr(tex, &data->bpp, &data->size_line, &data->endian);
-	if (data->player->side == 0)
-		wallX = data->player->posY + draw.wall_dist * data->player->rayDirY;
-	else
-		wallX = data->player->posX + draw.wall_dist * data->player->rayDirX;
-	wallX -= floor(wallX);
-	texX = (int)(wallX * (double)data->text_width);
-	if (data->player->side == 0 && data->player->rayDirX > 0)
-		texX = data->text_width - texX - 1;
-	if (data->player->side == 1 && data->player->rayDirY < 0)
-		texX = data->text_width - texX - 1;
-	step = 1.0 * data->text_height / (draw.drawEnd - draw.drawStart);
-	texPos = (draw.drawStart - screenHeight / 2 + (draw.drawEnd - draw.drawStart) / 2) * step;
-	int y = draw.drawStart;
-	while (y < draw.drawEnd)
-	{
-		int texY = (int)texPos & (data->text_height - 1);
-		texPos += step;
-		int color = tex_data[texY * (data->size_line / 4) + texX];
-		img_data[y * (size_line / 4) + draw.x] = color;
-		y++;
-	}
-}
-
-
-void raycasting(t_player *player, int *img_data, int size_line)
+static void raycasting(t_data *data, int *img_data, int size_line)
 {
 	int x;
 	int w;
@@ -153,12 +65,12 @@ void raycasting(t_player *player, int *img_data, int size_line)
 	while (x < w)
 	{
 		cameraX = 2 * (double)x / (double)w - 1.0;
-		player->rayDirX = player->dirX + player->planeX * cameraX;
-		player->rayDirY = player->dirY + player->planeY * cameraX;
-		ray_dist(player);
-		side_ray(player);
-		dda_algorithm(player);
-		wall_dist = find_wall_distance(player);
+		data->player->rayDirX = data->player->dirX + data->player->planeX * cameraX;
+		data->player->rayDirY = data->player->dirY + data->player->planeY * cameraX;
+		ray_dist(data->player);
+		side_ray(data->player);
+		dda_algorithm(data);
+		wall_dist = find_wall_distance(data->player);
 		int lineHeight = (int)(screenHeight / wall_dist);
 		int drawStart = -lineHeight / 2 + screenHeight / 2;
 		if (drawStart < 0)
@@ -184,7 +96,26 @@ void raycasting(t_player *player, int *img_data, int size_line)
 		draw.drawStart = drawStart;
 		draw.drawEnd = drawEnd;
 		draw.wall_dist = wall_dist;
-		draw_wall_line(player->data, img_data, size_line, draw);
+		draw_wall_line(data, img_data, size_line, draw);
 		x++;
 	}
+}
+
+// Basit image buffer ile çizim için fonksiyon
+void draw_image(t_data *data)
+{
+	void *img;
+	int *img_data;
+	int bpp, size_line, endian;
+
+	img = mlx_new_image(data->mlx, screenWidth, screenHeight);
+	if (!img)
+	{
+		fprintf(stderr, "[ERROR] Image buffer olusturulamadi!\n");
+		return;
+	}
+	img_data = (int *)mlx_get_data_addr(img, &bpp, &size_line, &endian);
+	raycasting(data, img_data, size_line);
+	mlx_put_image_to_window(data->mlx, data->win, img, 0, 0);
+	mlx_destroy_image(data->mlx, img);
 }

@@ -1,19 +1,34 @@
-#ifndef CUB_3D_H
-#define CUB_3D_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/16 11:56:14 by skaynar           #+#    #+#             */
+/*   Updated: 2025/08/19 14:24:46 by teraslan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "stdlib.h"
+#ifndef CUB3D_H
+# define CUB3D_H
+
+#include <fcntl.h>      // open
+#include <stdio.h>      // printf, perror
+#include <string.h>     // strerror
+#include <sys/time.h>
+#include <stdbool.h>
+#include "libft/libft.h"
+#include "get_next_line.h"
 #include "math.h"
 #include "./minilibx-linux/mlx.h"
-
-#define screenWidth 1920
-#define screenHeight 1080
-
 
 #ifndef M_PI
 # define M_PI 3.14159265358979323846
 #endif
 
-struct s_data;
+#define screenWidth 1920
+#define screenHeight 1080
 
 typedef struct s_draw
 {
@@ -25,7 +40,7 @@ typedef struct s_draw
 
 typedef struct s_player
 {
-	double	posX; //oyuncunun map üzerindeki x konumu
+    double	posX; //oyuncunun map üzerindeki x konumu
 	double	posY; //oyuncunun map üzerindeki y konumu
 	double	dirX; //oyuncunun baktığı x 
 	double	dirY; //oyuncunun baktığı y
@@ -46,30 +61,63 @@ typedef struct s_player
 	int hit;
 	int side;
 	t_draw	draw;
-	struct s_data *data;
-}   t_player;
+}	t_player;
+
+typedef struct s_map
+{
+	char *map_line;
+	struct s_map *next;	
+}	t_map;
+
+typedef struct s_feature
+{
+    char *no;
+    char *so;
+    char *we;
+    char *ea;
+    char *f;
+    char *c;
+    
+}   t_feature;
 
 typedef struct s_data
 {
-	char	**map;
+    t_feature *feature;
 	t_player *player;
-	void	*mlx;   // Eklendi
-	void	*win;
+	t_map *map;
 	int map_width;
 	int map_height;
+	void	*mlx;
+    void	*win;
+    bool    empty;
+	char	**char_map;
 	void *tex_north;
 	void *tex_south;
 	void *tex_east;
 	void *tex_west;
-	int		*img_data;     // eklendi
-	int		size_line;     // eklendi
-	int		bpp;           // eklendi
-	int		endian;        // eklendi
 	int text_width;
 	int text_height;
+	int		size_line;     // eklendi
+	int		bpp;           // eklendi
+	int		endian;
 }	t_data;
 
-void	player_position(t_player *player);
-void	raycasting(t_player *player, int *img_data, int size_line);
+int is_true_map(char *map, t_data *data);
+int	jumper(char c);
+int	check_map_name(char *str);
+int check_map(char **av, t_data *data);
+t_map	*ft_mapnew(void *content);
+void    map_add_back(t_map **lst, t_map *new);
+int is_exe(char *str);
+int	rgb_atoi(const char *str);
+int is_truedigit(char *str);
+void	execute(t_data *data);
+int	key_hook(int keycode, t_data *data);
+int	exit_program(t_data *data);
 void draw_image(t_data *data);
+void dda_algorithm(t_data *data);
+double find_wall_distance(t_player *player);
+void draw_wall_line(t_data *data, int *img_data, int size_line, t_draw draw);
+void *choose_texture(t_data *data);
+
 #endif
