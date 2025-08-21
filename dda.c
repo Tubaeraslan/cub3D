@@ -79,8 +79,8 @@ void dda_algorithm(t_data *data)
 			data->player->mapY += data->player->stepY;
 			data->player->side = 1;
 		}
-		if (data->player->mapY < 0 || data->player->mapY >= data->map_height ||
-			data->player->mapX < 0 || data->player->mapX >= data->map_width ||
+		if (data->player->mapY < 0 || data->player->mapY >= data->high ||
+			data->player->mapX < 0 || data->player->mapX >= data->widht ||
 			data->char_map[data->player->mapY][data->player->mapX] == '1')
 			data->player->hit = 1;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skaynar <skaynar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 00:00:09 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/18 17:52:33 by skaynar          ###   ########.fr       */
+/*   Updated: 2025/08/21 14:27:58 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,29 @@ int	is_feature(char *line, t_data *data)
 }
 
 int is_map(char *line, t_data *data)
-{	
-	int i;
-
+{
+    int i ;
 	i = 0;
-	while(line[i])
-	{
-		if(line[i] == '1' || jumper(line[i]) || line[i] == '0' || line[i] == 'N')
-			i++;
-		else
-			return(0);
-	}
-	map_add_back(&data->map, ft_mapnew(line));
-	return(1);
+    while (line[i])
+    {
+        if (line[i] == '1' || line[i] == '0' || jumper(line[i]))
+        {
+            i++;
+            continue;
+        }
+        else if (line[i] == 'N' || line[i] == 'S' || line[i] == 'E' || line[i] == 'W')
+        {
+            if (!data->player->start_pos)
+                data->player->start_pos = line[i];
+            else
+                return (0);
+        }
+        else
+            return 0;
+        i++;
+    }
+    map_add_back(&data->map, ft_mapnew(line));
+    return 1;
 }
 
 int is_empty(char *line)
@@ -98,6 +108,7 @@ int is_true_map(char *map, t_data *data)
     if(fd == -1)
 		return (close(fd), printf("Error\nCould not open map file\n"), 0);
 	line = get_next_line(fd);
+	data->line_num = 0;
 	while(line)
 	{
 		if(is_feature(line, data) || is_empty(line))
@@ -106,7 +117,10 @@ int is_true_map(char *map, t_data *data)
 			line = get_next_line(fd);
 		else
 			return(printf("Error\nFalse map\n"),0);
+		data->line_num++;
 	}
+	if(!data->player->start_pos)
+		return(printf("Error\nThere isn't Player\n"),0);
 	if(exe_feature(data->feature))
         return(printf("Error\nNo texture\n"),0);
     return(1);

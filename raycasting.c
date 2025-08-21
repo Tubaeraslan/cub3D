@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 14:14:26 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/19 14:19:32 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/21 15:29:37 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,16 @@ static void raycasting(t_data *data, int *img_data, int size_line)
 		int y = 0;
 		while (y < drawStart)
 		{
-			img_data[y * (size_line / 4) + x] = 0x87CEEB;
+			if (x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)
+				img_data[y * (size_line / 4) + x] = 0x87CEEB;
 			y++;
 		}
 		// zemin
 		y = drawEnd;
 		while (y < screenHeight)
 		{
-			img_data[y * (size_line / 4) + x] = 0x444444;
+			if (x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)
+				img_data[y * (size_line / 4) + x] = 0x444444;
 			y++;
 		}
 		draw.x = x;

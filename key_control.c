@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 13:24:37 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/19 14:48:00 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/21 15:14:27 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	key_hook(int keycode, t_data *data)
 	{
 		double newX = data->player->posX + data->player->dirX * moveSpeed;
 		double newY = data->player->posY + data->player->dirY * moveSpeed;
-		if (newX >= 0 && newX < data->map_width && newY >= 0 && newY < data->map_height && data->char_map[(int)newY][(int)newX] != '1')
+		if (newX >= 0 && newX < data->widht && newY >= 0 && newY < data->high && data->char_map[(int)newY][(int)newX] != '1')
 		{
 			data->player->posX = newX;
 			data->player->posY = newY;
@@ -40,7 +40,7 @@ int	key_hook(int keycode, t_data *data)
 	{
 		double newX = data->player->posX - data->player->dirX * moveSpeed;
 		double newY = data->player->posY - data->player->dirY * moveSpeed;
-		if (newX >= 0 && newX < data->map_width && newY >= 0 && newY < data->map_height && data->char_map[(int)newY][(int)newX] != '1')
+		if (newX >= 0 && newX < data->widht && newY >= 0 && newY < data->high && data->char_map[(int)newY][(int)newX] != '1')
 		{
 			data->player->posX = newX;
 			data->player->posY = newY;
@@ -50,7 +50,7 @@ int	key_hook(int keycode, t_data *data)
 	{
 		double newX = data->player->posX - data->player->planeX * moveSpeed;
 		double newY = data->player->posY - data->player->planeY * moveSpeed;
-		if (newX >= 0 && newX < data->map_width && newY >= 0 && newY < data->map_height && data->char_map[(int)newY][(int)newX] != '1')
+		if (newX >= 0 && newX < data->widht && newY >= 0 && newY < data->high && data->char_map[(int)newY][(int)newX] != '1')
 		{
 			data->player->posX = newX;
 			data->player->posY = newY;
@@ -60,7 +60,7 @@ int	key_hook(int keycode, t_data *data)
 	{
 		double newX = data->player->posX + data->player->planeX * moveSpeed;
 		double newY = data->player->posY + data->player->planeY * moveSpeed;
-		if (newX >= 0 && newX < data->map_width && newY >= 0 && newY < data->map_height && data->char_map[(int)newY][(int)newX] != '1')
+		if (newX >= 0 && newX < data->widht && newY >= 0 && newY < data->high && data->char_map[(int)newY][(int)newX] != '1')
 		{
 			data->player->posX = newX;
 			data->player->posY = newY;

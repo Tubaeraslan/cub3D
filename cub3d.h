@@ -71,12 +71,15 @@ typedef struct s_player
 	double sideDistY;
 	int hit;
 	int side;
+	int player_x;
+	int player_y;
 	t_draw	draw;
 }	t_player;
 
 typedef struct s_map
 {
 	char *map_line;
+	int num;
 	struct s_map *next;	
 }	t_map;
 
@@ -96,8 +99,9 @@ typedef struct s_data
 	t_feature *feature;
 	t_player *player;
 	t_map *map;
-	int map_width;
-	int map_height;
+	int high;
+	int widht;
+	int line_num;
 	void	*mlx;
 	void	*win;
 	bool    empty;
@@ -130,5 +134,7 @@ void dda_algorithm(t_data *data);
 double find_wall_distance(t_player *player);
 void draw_wall_line(t_data *data, int *img_data, int size_line, t_draw draw);
 t_texture *choose_texture(t_data *data);
-
+int	ft_mapsize(t_map *lst);
+void list_to_char(t_data *data);
+void find_player_position(char **map, t_data *data);
 #endif

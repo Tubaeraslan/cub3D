@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lstfnc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skaynar <skaynar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 11:37:41 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/17 13:04:14 by skaynar          ###   ########.fr       */
+/*   Updated: 2025/08/21 14:25:23 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,23 @@
 // 		current = current->next;
 // 	return (current);
 // }
+
+int	ft_mapsize(t_map *lst)
+{
+	int		i;
+	t_map	*current;
+
+	if (!lst)
+		return (0);
+	current = lst;
+	i = 0;
+	while (current)
+	{
+		current = current->next;
+		i++;
+	}
+	return (i);
+}
 
 t_map	*ft_mapnew(void *content)
 {
