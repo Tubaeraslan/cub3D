@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,7 +7,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 14:18:44 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/19 14:22:18 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/21 13:59:48 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +15,7 @@
 
 void draw_wall_line(t_data *data, int *img_data, int size_line, t_draw draw)
 {
-	void *tex;
+	t_texture *tex;
 	int *tex_data;
 	double wallX;
 	int texX;
@@ -22,25 +23,29 @@ void draw_wall_line(t_data *data, int *img_data, int size_line, t_draw draw)
 	double texPos;
 
 	tex = choose_texture(data);
-	tex_data = (int *)mlx_get_data_addr(tex, &data->bpp, &data->size_line, &data->endian);
+	if (!tex || !tex->img || !tex->addr) {
+		printf("[ERROR] draw_wall_line: Seçilen texture NULL!\n");
+		return;
+	}
+	tex_data = tex->addr;
 	if (data->player->side == 0)
 		wallX = data->player->posY + draw.wall_dist * data->player->rayDirY;
 	else
 		wallX = data->player->posX + draw.wall_dist * data->player->rayDirX;
 	wallX -= floor(wallX);
-	texX = (int)(wallX * (double)data->text_width);
+	texX = (int)(wallX * (double)tex->width);
 	if (data->player->side == 0 && data->player->rayDirX > 0)
-		texX = data->text_width - texX - 1;
+		texX = tex->width - texX - 1;
 	if (data->player->side == 1 && data->player->rayDirY < 0)
-		texX = data->text_width - texX - 1;
-	step = 1.0 * data->text_height / (draw.drawEnd - draw.drawStart);
+		texX = tex->width - texX - 1;
+	step = 1.0 * tex->height / (draw.drawEnd - draw.drawStart);
 	texPos = (draw.drawStart - screenHeight / 2 + (draw.drawEnd - draw.drawStart) / 2) * step;
 	int y = draw.drawStart;
 	while (y < draw.drawEnd)
 	{
-		int texY = (int)texPos & (data->text_height - 1);
+		int texY = (int)texPos & (tex->height - 1);
 		texPos += step;
-		int color = tex_data[texY * (data->size_line / 4) + texX];
+		int color = tex_data[texY * (tex->size_line / 4) + texX];
 		img_data[y * (size_line / 4) + draw.x] = color;
 		y++;
 	}

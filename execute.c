@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,7 +7,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 13:21:54 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/19 14:39:48 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/21 14:16:57 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +50,13 @@ void	ready_mlx(t_data *data)
 	mlx_hook(data->win, 17, 0, exit_program, data);
 }
 
+void strip_trailing_whitespace(char *str)
+{
+	int len = ft_strlen(str);
+	while (len > 0 && (str[len-1] == ' ' || str[len-1] == '\n' || str[len-1] == '\r' || str[len-1] == '\t'))
+		str[--len] = '\0';
+}
+
 void	load_textures(t_data *data)
 {
 	char *north = data->feature->no;
@@ -58,12 +66,20 @@ void	load_textures(t_data *data)
 
 	if (north && (strncmp(north, "NO ", 3) == 0 || strncmp(north, "NO\t", 3) == 0))
 		north += 3;
+	while (north && *north == ' ')
+		north++;
 	if (south && (strncmp(south, "SO ", 3) == 0 || strncmp(south, "SO\t", 3) == 0))
 		south += 3;
+	while (south && *south == ' ')
+		south++;
 	if (east && (strncmp(east, "EA ", 3) == 0 || strncmp(east, "EA\t", 3) == 0))
 		east += 3;
+	while (east && *east == ' ')
+		east++;
 	if (west && (strncmp(west, "WE ", 3) == 0 || strncmp(west, "WE\t", 3) == 0))
 		west += 3;
+	while (west && *west == ' ')
+		west++;
 
 	// Başındaki boşlukları da atla
 	while (north && *north == ' ')
@@ -74,18 +90,26 @@ void	load_textures(t_data *data)
 		east++;
 	while (west && *west == ' ')
 		west++;
-	data->tex_north = mlx_xpm_file_to_image(data->mlx, "./textures/north.xpm", &data->text_width, &data->text_height);
-	if (!data->tex_north)
+	strip_trailing_whitespace(north);
+	strip_trailing_whitespace(south);
+	strip_trailing_whitespace(east);
+	strip_trailing_whitespace(west);
+	data->north.img = mlx_xpm_file_to_image(data->mlx, north, &data->north.width, &data->north.height);
+	if (!data->north.img)
 		printf("[ERROR] North texture yüklenemedi: %s\n", north);
-	data->tex_south = mlx_xpm_file_to_image(data->mlx, "./textures/south.xpm", &data->text_width, &data->text_height);
-	if (!data->tex_south)
+	data->north.addr = (int *)mlx_get_data_addr(data->north.img, &data->north.bpp, &data->north.size_line, &data->north.endian);
+	data->south.img = mlx_xpm_file_to_image(data->mlx, south, &data->south.width, &data->south.height);
+	if (!data->south.img)
 		printf("[ERROR] South texture yüklenemedi: %s\n", south);
-	data->tex_east = mlx_xpm_file_to_image(data->mlx, "./textures/east.xpm", &data->text_width, &data->text_height);
-	if (!data->tex_east)
+	data->south.addr = (int *)mlx_get_data_addr(data->south.img, &data->south.bpp, &data->south.size_line, &data->south.endian);
+	data->east.img = mlx_xpm_file_to_image(data->mlx, east, &data->east.width, &data->east.height);
+	if (!data->east.img)
 		printf("[ERROR] East texture yüklenemedi: %s\n", east);
-	data->tex_west = mlx_xpm_file_to_image(data->mlx, "./textures/west.xpm", &data->text_width, &data->text_height);
-	if (!data->tex_west)
+	data->east.addr = (int *)mlx_get_data_addr(data->east.img, &data->east.bpp, &data->east.size_line, &data->east.endian);
+	data->west.img = mlx_xpm_file_to_image(data->mlx, west, &data->west.width, &data->west.height);
+	if (!data->west.img)
 		printf("[ERROR] West texture yüklenemedi: %s\n", west);
+	data->west.addr = (int *)mlx_get_data_addr(data->west.img, &data->west.bpp, &data->west.size_line, &data->west.endian);
 }
 
 void	execute(t_data *data)

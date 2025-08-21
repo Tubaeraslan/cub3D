@@ -10,7 +10,7 @@ SRC = main.c mapctl.c get_next_line.c get_next_line_utils.c lstfnc.c utils.c ini
 OBJS = main.o mapctl.o get_next_line.o get_next_line_utils.o lstfnc.o utils.o init.o check.o \
 		execute.o key_control.o raycasting.o dda.o texture_utils.o
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 CC = cc
 

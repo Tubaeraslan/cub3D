@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -38,9 +39,19 @@ typedef struct s_draw
 	double wall_dist;
 } t_draw;
 
+typedef struct s_texture {
+	void *img;
+	int *addr;
+	int width;
+	int height;
+	int bpp;
+	int size_line;
+	int endian;
+} t_texture;
+
 typedef struct s_player
 {
-    double	posX; //oyuncunun map üzerindeki x konumu
+	double	posX; //oyuncunun map üzerindeki x konumu
 	double	posY; //oyuncunun map üzerindeki y konumu
 	double	dirX; //oyuncunun baktığı x 
 	double	dirY; //oyuncunun baktığı y
@@ -71,30 +82,30 @@ typedef struct s_map
 
 typedef struct s_feature
 {
-    char *no;
-    char *so;
-    char *we;
-    char *ea;
-    char *f;
-    char *c;
-    
+	char *no;
+	char *so;
+	char *we;
+	char *ea;
+	char *f;
+	char *c;
+	
 }   t_feature;
 
 typedef struct s_data
 {
-    t_feature *feature;
+	t_feature *feature;
 	t_player *player;
 	t_map *map;
 	int map_width;
 	int map_height;
 	void	*mlx;
-    void	*win;
-    bool    empty;
+	void	*win;
+	bool    empty;
 	char	**char_map;
-	void *tex_north;
-	void *tex_south;
-	void *tex_east;
-	void *tex_west;
+	t_texture north;
+	t_texture south;
+	t_texture east;
+	t_texture west;
 	int text_width;
 	int text_height;
 	int		size_line;     // eklendi
@@ -118,6 +129,6 @@ void draw_image(t_data *data);
 void dda_algorithm(t_data *data);
 double find_wall_distance(t_player *player);
 void draw_wall_line(t_data *data, int *img_data, int size_line, t_draw draw);
-void *choose_texture(t_data *data);
+t_texture *choose_texture(t_data *data);
 
 #endif

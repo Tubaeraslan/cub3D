@@ -1,8 +1,8 @@
 
-SO ./coin.xpm
-NO ./coin.xpm
-WE ./coin.xpm
-EA ./coin.xpm
+SO textures/south.xpm
+NO textures/north.xpm
+WE textures/west.xpm
+EA textures/east.xpm
 
 
 
