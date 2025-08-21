@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 14:14:26 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/21 15:29:37 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:58:30 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ static void raycasting(t_data *data, int *img_data, int size_line)
 	double cameraX;
 	double wall_dist;
 	t_draw draw;
+	// char *sky = data->feature->c;
+	// char *ground = data->feature->f;
 
 	w = screenWidth;
 	x = 0;
@@ -78,8 +80,16 @@ static void raycasting(t_data *data, int *img_data, int size_line)
 		int drawEnd = lineHeight / 2 + screenHeight / 2;
 		if (drawEnd >= screenHeight)
 			drawEnd = screenHeight - 1;
-		// gökyüzü
+		// // gökyüzü
 		int y = 0;
+		// int sky_color = 0x87CEEB;
+		// int ground_color = 0x444444;
+		// strip_trailing_whitespace(sky);
+		// strip_trailing_whitespace(ground);
+		// if (sky)
+		// 	sky_color = rgb_atoi(sky);
+		// if (ground)
+		// 	ground_color = rgb_atoi(ground);
 		while (y < drawStart)
 		{
 			if (x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)

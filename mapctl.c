@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 12:43:31 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/21 15:21:30 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/21 19:36:52 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void find_player_position(char **map, t_data *data)
 		{
 			if (map[y][x] == data->player->start_pos)
 			{
-				data->player->posX = x + 0.5;
-				data->player->posY = y + 0.5;
+				data->player->posY = x + 0.5;
+				data->player->posX = y + 0.5;
 				return;
 			}
 			x++;

@@ -52,6 +52,8 @@ void	ready_mlx(t_data *data)
 
 void strip_trailing_whitespace(char *str)
 {
+	if (!str)
+        return;
 	int len = ft_strlen(str);
 	while (len > 0 && (str[len-1] == ' ' || str[len-1] == '\n' || str[len-1] == '\r' || str[len-1] == '\t'))
 		str[--len] = '\0';

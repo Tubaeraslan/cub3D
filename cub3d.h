@@ -137,4 +137,5 @@ t_texture *choose_texture(t_data *data);
 int	ft_mapsize(t_map *lst);
 void list_to_char(t_data *data);
 void find_player_position(char **map, t_data *data);
+void strip_trailing_whitespace(char *str);
 #endif
