@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:47:43 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/22 13:47:54 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/22 15:14:42 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ double find_wall_distance(t_player *player)
 void dda_algorithm(t_data *data)
 {
 	// DDA
-	printf("[DEBUG] DDA başlıyor: mapX=%d, mapY=%d\n", data->player->mapX, data->player->mapY);
 	data->player->hit = 0;
 	int limit = 0;
 	while (data->player->hit == 0 && limit++ < 1000)
@@ -85,8 +84,4 @@ void dda_algorithm(t_data *data)
 			data->char_map[data->player->mapY][data->player->mapX] == '1')
 			data->player->hit = 1;
 	}
-	if (limit >= 1000)
-		printf("[ERROR] DDA limit aşımı! mapX=%d, mapY=%d\n", data->player->mapX, data->player->mapY);
-	printf("[DEBUG] DDA bitiyor: mapX=%d, mapY=%d, limit=%d\n", data->player->mapX, data->player->mapY, limit);
-		printf("[ERROR] DDA limit aşımı!\n");
 }

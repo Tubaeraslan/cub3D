@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:48:29 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/22 13:48:40 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/22 15:13:28 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,21 @@ static void side_ray(t_player *player)
 	}
 }
 
+// 'C 225,30,0' veya '225,30,0' -> 0xE11E00
+int rgb_str_to_int(const char *str)
+{
+    int r = 0, g = 0, b = 0;
+    while (*str && (*str < '0' || *str > '9')) str++; // baştaki harf/boşlukları atla
+    r = ft_atoi(str);
+    while (*str && *str != ',') str++;
+    if (*str == ',') str++;
+    g = ft_atoi(str);
+    while (*str && *str != ',') str++;
+    if (*str == ',') str++;
+    b = ft_atoi(str);
+    return ((r << 16) | (g << 8) | b);
+}
+
 static void raycasting(t_data *data, int *img_data, int size_line)
 {
 	int x;
@@ -64,6 +79,12 @@ static void raycasting(t_data *data, int *img_data, int size_line)
 
 	w = screenWidth;
 	x = 0;
+	int sky_color   = 0xFFB6C1; // hex formatı
+	int ground_color = 0xFFB6C1;
+	if (data->feature->c)
+		sky_color = rgb_str_to_int(data->feature->c);
+	if (data->feature->f)
+		ground_color = rgb_str_to_int(data->feature->f);
 	while (x < w)
 	{
 		cameraX = 2 * (double)x / (double)w - 1.0;
@@ -80,28 +101,19 @@ static void raycasting(t_data *data, int *img_data, int size_line)
 		int drawEnd = lineHeight / 2 + screenHeight / 2;
 		if (drawEnd >= screenHeight)
 			drawEnd = screenHeight - 1;
-		// // gökyüzü
+		// gökyüzü ve zemin renkleri
 		int y = 0;
-		// int sky_color = 0x87CEEB;
-		// int ground_color = 0x444444;
-		// strip_trailing_whitespace(sky);
-		// strip_trailing_whitespace(ground);
-		// if (sky)
-		// 	sky_color = rgb_atoi(sky);
-		// if (ground)
-		// 	ground_color = rgb_atoi(ground);
 		while (y < drawStart)
 		{
 			if (x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)
-				img_data[y * (size_line / 4) + x] = 0x87CEEB;
+				img_data[y * (size_line / 4) + x] = sky_color;
 			y++;
 		}
-		// zemin
 		y = drawEnd;
 		while (y < screenHeight)
 		{
 			if (x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)
-				img_data[y * (size_line / 4) + x] = 0x444444;
+				img_data[y * (size_line / 4) + x] = ground_color;
 			y++;
 		}
 		draw.x = x;

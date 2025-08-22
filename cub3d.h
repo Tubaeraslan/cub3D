@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 11:56:14 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/22 13:56:22 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/22 15:14:18 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_texture {
 
 typedef struct s_player
 {
-    double	posX; //oyuncunun map üzerindeki x konumu
+	double	posX; //oyuncunun map üzerindeki x konumu
 	double	posY; //oyuncunun map üzerindeki y konumu
 	double	dirX; //oyuncunun baktığı x 
 	double	dirY; //oyuncunun baktığı y
