@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 17:38:44 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/22 17:40:32 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/22 18:19:06 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void ray_dist(t_player *player)
 {
-	// DDA setup
 	player->mapX = (int)player->posX;
 	player->mapY = (int)player->posY;
 	if (player->rayDirX == 0)
@@ -29,7 +28,6 @@ void ray_dist(t_player *player)
 
 void side_ray(t_player *player)
 {
-	// Step and initial sideDist
 	if (player->rayDirX < 0)
 	{
 		player->stepX = -1;
@@ -52,11 +50,10 @@ void side_ray(t_player *player)
 	}
 }
 
-// 'C 225,30,0' veya '225,30,0' -> 0xE11E00
 int rgb_str_to_int(const char *str)
 {
     int r = 0, g = 0, b = 0;
-    while (*str && (*str < '0' || *str > '9')) str++; // baştaki harf/boşlukları atla
+    while (*str && (*str < '0' || *str > '9')) str++;
     r = ft_atoi(str);
     while (*str && *str != ',') str++;
     if (*str == ',') str++;
@@ -78,11 +75,11 @@ void ray_measure(int x, int w,t_data *data)
 
 void sky_floor(t_skyfloor ts,t_data *data)
 {
-	int sky_color; // hex formatı
+	int sky_color;
 	int ground_color;
 	int y;
 
-	sky_color   = 0xFFB6C1; // hex formatı
+	sky_color   = 0xFFB6C1;
 	ground_color = 0xFFB6C1;
 	if (data->feature->c)
 		sky_color = rgb_str_to_int(data->feature->c);

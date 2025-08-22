@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 11:56:14 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/22 17:46:00 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/22 18:05:32 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ typedef struct s_draw
 	double wall_dist;
 } t_draw;
 
+typedef struct s_tex_calc
+{
+	int texX;
+	double step;
+	double texPos;
+}	t_tex_calc;
 
 typedef struct s_skyfloor
 {

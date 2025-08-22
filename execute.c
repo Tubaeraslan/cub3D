@@ -6,33 +6,33 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:47:21 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/22 16:09:22 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/22 18:16:31 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void player_position(t_player *player)
+void	player_position(t_player *player)
 {
 	double	fov;
 
-	fov = 66.0 * M_PI / 180.0; // 66° FOV
+	fov = 66.0 * M_PI / 180.0;
 	if (player->start_pos == 'N')
 	{
 		player->dirX = 0;
 		player->dirY = -1;
 	}
-	else if(player->start_pos == 'S')
+	else if (player->start_pos == 'S')
 	{
 		player->dirX = 0;
 		player->dirY = 1;
 	}
-	else if(player->start_pos == 'E')
+	else if (player->start_pos == 'E')
 	{
 		player->dirX = 1;
 		player->dirY = 0;
 	}
-	else if(player->start_pos == 'W')
+	else if (player->start_pos == 'W')
 	{
 		player->dirX = -1;
 		player->dirY = 0;
@@ -45,38 +45,37 @@ void	ready_mlx(t_data *data)
 {
 	data->mlx = mlx_init();
 	data->win = mlx_new_window(data->mlx, screenWidth, screenHeight, "cub3d");
-	mlx_hook(data->win, 2, 1L<<0, key_hook, data);      // Key press
+	mlx_hook(data->win, 2, 1L << 0, key_hook, data);
 	mlx_hook(data->win, 17, 0, exit_program, data);
 }
 
-// Asıl yükleme fonksiyonu
-void load_textures(t_data *data)
+void	load_textures(t_data *data)
 {
-    char *north;
-    char *south;
-    char *east;
-    char *west;
+	char	*north;
+	char	*south;
+	char	*east;
+	char	*west;
 
 	north = parse_texture_path(data->feature->no, "NO ");
 	south = parse_texture_path(data->feature->so, "SO ");
-	east  = parse_texture_path(data->feature->ea, "EA ");
-	west  = parse_texture_path(data->feature->we, "WE ");
-    data->north.img = mlx_xpm_file_to_image(data->mlx, north, &data->north.width, &data->north.height);
-    if (!data->north.img)
-        printf("[ERROR] North texture yüklenemedi: %s\n", north);
-    data->north.addr = (int *)mlx_get_data_addr(data->north.img, &data->north.bpp, &data->north.size_line, &data->north.endian);
-    data->south.img = mlx_xpm_file_to_image(data->mlx, south, &data->south.width, &data->south.height);
-    if (!data->south.img)
-        printf("[ERROR] South texture yüklenemedi: %s\n", south);
-    data->south.addr = (int *)mlx_get_data_addr(data->south.img, &data->south.bpp, &data->south.size_line, &data->south.endian);
-    data->east.img = mlx_xpm_file_to_image(data->mlx, east, &data->east.width, &data->east.height);
-    if (!data->east.img)
-        printf("[ERROR] East texture yüklenemedi: %s\n", east);
-    data->east.addr = (int *)mlx_get_data_addr(data->east.img, &data->east.bpp, &data->east.size_line, &data->east.endian);
-    data->west.img = mlx_xpm_file_to_image(data->mlx, west, &data->west.width, &data->west.height);
-    if (!data->west.img)
-        printf("[ERROR] West texture yüklenemedi: %s\n", west);
-    data->west.addr = (int *)mlx_get_data_addr(data->west.img, &data->west.bpp, &data->west.size_line, &data->west.endian);
+	east = parse_texture_path(data->feature->ea, "EA ");
+	west = parse_texture_path(data->feature->we, "WE ");
+	data->north.img = mlx_xpm_file_to_image(data->mlx, north,
+			&data->north.width, &data->north.height);
+	data->north.addr = (int *)mlx_get_data_addr(data->north.img,
+			&data->north.bpp, &data->north.size_line, &data->north.endian);
+	data->south.img = mlx_xpm_file_to_image(data->mlx, south,
+			&data->south.width, &data->south.height);
+	data->south.addr = (int *)mlx_get_data_addr(data->south.img,
+			&data->south.bpp, &data->south.size_line, &data->south.endian);
+	data->east.img = mlx_xpm_file_to_image(data->mlx, east,
+			&data->east.width, &data->east.height);
+	data->east.addr = (int *)mlx_get_data_addr(data->east.img,
+			&data->east.bpp, &data->east.size_line, &data->east.endian);
+	data->west.img = mlx_xpm_file_to_image(data->mlx, west,
+			&data->west.width, &data->west.height);
+	data->west.addr = (int *)mlx_get_data_addr(data->west.img,
+			&data->west.bpp, &data->west.size_line, &data->west.endian);
 }
 
 void	execute(t_data *data)
