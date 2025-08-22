@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 11:56:14 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/19 14:24:46 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/22 13:56:22 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +50,7 @@ typedef struct s_texture {
 
 typedef struct s_player
 {
-	double	posX; //oyuncunun map üzerindeki x konumu
+    double	posX; //oyuncunun map üzerindeki x konumu
 	double	posY; //oyuncunun map üzerindeki y konumu
 	double	dirX; //oyuncunun baktığı x 
 	double	dirY; //oyuncunun baktığı y
@@ -73,7 +72,6 @@ typedef struct s_player
 	int side;
 	int player_x;
 	int player_y;
-	t_draw	draw;
 }	t_player;
 
 typedef struct s_map
@@ -85,57 +83,59 @@ typedef struct s_map
 
 typedef struct s_feature
 {
-	char *no;
-	char *so;
-	char *we;
-	char *ea;
-	char *f;
-	char *c;
-	
+    char *no;
+    char *so;
+    char *we;
+    char *ea;
+    char *f;
+    char *c;
+    
 }   t_feature;
+
 
 typedef struct s_data
 {
-	t_feature *feature;
+    t_feature *feature;
 	t_player *player;
 	t_map *map;
 	int high;
 	int widht;
-	int line_num;
-	void	*mlx;
-	void	*win;
-	bool    empty;
-	char	**char_map;
+	char **char_map;
 	t_texture north;
 	t_texture south;
 	t_texture east;
 	t_texture west;
+	char **fakemap;
+	int line_num;
+	void	*mlx;
+    void	*win;
+    bool    empty;
 	int text_width;
 	int text_height;
-	int		size_line;     // eklendi
-	int		bpp;           // eklendi
-	int		endian;
 }	t_data;
 
 int is_true_map(char *map, t_data *data);
+void	clear_array(char **array);
+void	freegnl(int fd);
 int	jumper(char c);
 int	check_map_name(char *str);
 int check_map(char **av, t_data *data);
-t_map	*ft_mapnew(void *content);
+t_map	*ft_mapnew(char *content, int line_num);
 void    map_add_back(t_map **lst, t_map *new);
+int	ft_mapsize(t_map *lst);
 int is_exe(char *str);
 int	rgb_atoi(const char *str);
 int is_truedigit(char *str);
+char **copy_char_matrix(char **src);
+void free_data(t_data *data);
 void	execute(t_data *data);
 int	key_hook(int keycode, t_data *data);
 int	exit_program(t_data *data);
+void list_to_char(t_data *data);
+void find_player_position(char **map, t_data *data);
 void draw_image(t_data *data);
 void dda_algorithm(t_data *data);
 double find_wall_distance(t_player *player);
 void draw_wall_line(t_data *data, int *img_data, int size_line, t_draw draw);
 t_texture *choose_texture(t_data *data);
-int	ft_mapsize(t_map *lst);
-void list_to_char(t_data *data);
-void find_player_position(char **map, t_data *data);
-void strip_trailing_whitespace(char *str);
 #endif

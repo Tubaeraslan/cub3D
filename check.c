@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: skaynar <skaynar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 23:58:38 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/19 13:08:30 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/21 18:36:04 by skaynar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char  *namectl(char *xpm)
 			&& path[len - 4] == '.')
 			return (path);
 	}
-	return (NULL);
+	return (free(path) ,NULL);
 }
 
 int is_exe(char *str)
@@ -66,48 +66,8 @@ int is_exe(char *str)
     path = namectl(split[1]);
     i = open(path, O_RDONLY);
     if (i < 0)
-        return (1);
-    return (close(i),0);
-}
-
-int	is_rgb(char *line)
-{
-	int		count;
-	int		val;
-	char	**split;
-	int		i;
-
-	if (!line)
-		return (0);
-	// Başındaki boşlukları atla
-	while (*line && jumper(*line))
-		line++;
-	// Başta F veya C varsa atla
-	if (*line == 'F' || *line == 'C')
-		line++;
-	// Boşlukları tekrar atla
-	while (*line && jumper(*line))
-		line++;
-	// Virgüllere göre split
-	split = ft_split(line, ',');
-	if (!split)
-		return (0);
-	// Tam 3 parça olmalı
-	count = 0;
-	while (split[count])
-		count++;
-	if (count != 3)
-		return (0);
-	// Her parça 0-255 arası mı
-	i = 0;
-	while (i < 3)
-	{
-		val = rgb_atoi(split[i]);
-		if (val < 0 || val > 255)
-			return (0);
-		i++;
-	}
-	return (1);
+        return (clear_array(split),free(path),1);
+    return (close(i),clear_array(split),free(path),0);
 }
 
 int is_truedigit(char *line)
@@ -132,14 +92,15 @@ int is_truedigit(char *line)
 	while (split[count])
 		count++;
 	if (count != 3)
-		return (0);
+		return (clear_array(split), 0);
 	i = 0;
 	while (i < 3)
 	{
 		val = rgb_atoi(split[i]);
 		if (val < 0 || val > 255)
-			return (0);
+			return (clear_array(split), 0);
 		i++;
 	}
+	clear_array(split);
 	return (1);
 }
