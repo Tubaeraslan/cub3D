@@ -6,119 +6,41 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:48:29 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/22 15:13:28 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:39:14 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void ray_dist(t_player *player)
-{
-	// DDA setup
-	player->mapX = (int)player->posX;
-	player->mapY = (int)player->posY;
-	if (player->rayDirX == 0)
-		player->deltaDistX = 1e30;
-	else
-		player->deltaDistX = fabs(1.0 / player->rayDirX);
-	if (player->rayDirY == 0)
-		player->deltaDistY = 1e30;
-	else
-		player->deltaDistY = fabs(1.0 / player->rayDirY);
-}
-
-static void side_ray(t_player *player)
-{
-	// Step and initial sideDist
-	if (player->rayDirX < 0)
-	{
-		player->stepX = -1;
-		player->sideDistX = (player->posX - player->mapX) * player->deltaDistX;
-	}
-	else
-	{
-		player->stepX = 1;
-		player->sideDistX = (player->mapX + 1.0 - player->posX) * player->deltaDistX;
-	}
-	if (player->rayDirY < 0)
-	{
-		player->stepY = -1;
-		player->sideDistY = (player->posY - player->mapY) * player->deltaDistY;
-	}
-	else
-	{
-		player->stepY = 1;
-		player->sideDistY = (player->mapY + 1.0 - player->posY) * player->deltaDistY;
-	}
-}
-
-// 'C 225,30,0' veya '225,30,0' -> 0xE11E00
-int rgb_str_to_int(const char *str)
-{
-    int r = 0, g = 0, b = 0;
-    while (*str && (*str < '0' || *str > '9')) str++; // baştaki harf/boşlukları atla
-    r = ft_atoi(str);
-    while (*str && *str != ',') str++;
-    if (*str == ',') str++;
-    g = ft_atoi(str);
-    while (*str && *str != ',') str++;
-    if (*str == ',') str++;
-    b = ft_atoi(str);
-    return ((r << 16) | (g << 8) | b);
-}
 
 static void raycasting(t_data *data, int *img_data, int size_line)
 {
 	int x;
-	int w;
-	double cameraX;
 	double wall_dist;
 	t_draw draw;
-	// char *sky = data->feature->c;
-	// char *ground = data->feature->f;
+	t_skyfloor ts;
 
-	w = screenWidth;
 	x = 0;
-	int sky_color   = 0xFFB6C1; // hex formatı
-	int ground_color = 0xFFB6C1;
-	if (data->feature->c)
-		sky_color = rgb_str_to_int(data->feature->c);
-	if (data->feature->f)
-		ground_color = rgb_str_to_int(data->feature->f);
-	while (x < w)
+	while (x < screenWidth)
 	{
-		cameraX = 2 * (double)x / (double)w - 1.0;
-		data->player->rayDirX = data->player->dirX + data->player->planeX * cameraX;
-		data->player->rayDirY = data->player->dirY + data->player->planeY * cameraX;
+		ray_measure(x, screenWidth, data);
 		ray_dist(data->player);
 		side_ray(data->player);
 		dda_algorithm(data);
 		wall_dist = find_wall_distance(data->player);
-		int lineHeight = (int)(screenHeight / wall_dist);
-		int drawStart = -lineHeight / 2 + screenHeight / 2;
-		if (drawStart < 0)
-			drawStart = 0;
-		int drawEnd = lineHeight / 2 + screenHeight / 2;
-		if (drawEnd >= screenHeight)
-			drawEnd = screenHeight - 1;
-		// gökyüzü ve zemin renkleri
-		int y = 0;
-		while (y < drawStart)
-		{
-			if (x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)
-				img_data[y * (size_line / 4) + x] = sky_color;
-			y++;
-		}
-		y = drawEnd;
-		while (y < screenHeight)
-		{
-			if (x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)
-				img_data[y * (size_line / 4) + x] = ground_color;
-			y++;
-		}
+		draw.drawStart = -((int)(screenHeight / wall_dist)) / 2 + screenHeight / 2;
+		if (draw.drawStart < 0)
+			draw.drawStart = 0;
+		draw.drawEnd = -draw.drawStart + screenHeight;
+		if (draw.drawEnd >= screenHeight)
+			draw.drawEnd = screenHeight - 1;
+		ts.x = x;
+		ts.drawStart = draw.drawStart;
+		ts.drawEnd = draw.drawEnd;
+		ts.img_data = img_data;
+		ts.size_line = size_line;
+		sky_floor(ts, data);
 		draw.x = x;
-		draw.drawStart = drawStart;
-		draw.drawEnd = drawEnd;
 		draw.wall_dist = wall_dist;
 		draw_wall_line(data, img_data, size_line, draw);
 		x++;

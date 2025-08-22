@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 11:56:14 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/22 15:14:18 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:40:45 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,19 @@ typedef struct s_draw
 	int drawEnd;
 	double wall_dist;
 } t_draw;
+
+
+typedef struct s_skyfloor
+{
+    int x;
+    int drawStart;
+    int drawEnd;
+    int sky_color;
+    int ground_color;
+    int *img_data;
+    int size_line;
+}   t_skyfloor;
+
 
 typedef struct s_texture {
 	void *img;
@@ -138,4 +151,12 @@ void dda_algorithm(t_data *data);
 double find_wall_distance(t_player *player);
 void draw_wall_line(t_data *data, int *img_data, int size_line, t_draw draw);
 t_texture *choose_texture(t_data *data);
+void player_position(t_player *player);
+void strip_trailing_whitespace(char *str);
+char *parse_texture_path(char *path, const char *prefix);
+void ray_dist(t_player *player);
+void side_ray(t_player *player);
+int rgb_str_to_int(const char *str);
+void ray_measure(int x, int w,t_data *data);
+void sky_floor(t_skyfloor ts,t_data *data);
 #endif

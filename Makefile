@@ -5,10 +5,10 @@ MLX_LIB = $(MLX_DIR)/libmlx.a
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 SRC = main.c mapctl.c get_next_line.c get_next_line_utils.c lstfnc.c utils.c init.c check.c \
-		execute.c key_control.c raycasting.c dda.c texture_utils.c
+		execute.c key_control.c raycasting.c dda.c texture_utils.c raycasting_utils.c
 
 OBJS = main.o mapctl.o get_next_line.o get_next_line_utils.o lstfnc.o utils.o init.o check.o \
-		execute.o key_control.o raycasting.o dda.o texture_utils.o
+		execute.o key_control.o raycasting.o dda.o texture_utils.o raycasting_utils.o
 
 CFLAGS = -Wall -Wextra -Werror -g
 
