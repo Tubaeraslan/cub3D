@@ -6,20 +6,20 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 13:28:15 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 18:44:33 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 19:16:38 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int exit_program(t_data *data)
+int	exit_program(t_data *data)
 {
 	(void)data;
 	exit(0);
 	return (0);
 }
 
-int key_press(int keycode, t_data *data)
+int	key_press(int keycode, t_data *data)
 {
 	if (keycode == KEY_ESC)
 		return (exit_program(data), 0);
@@ -38,7 +38,7 @@ int key_press(int keycode, t_data *data)
 	return (0);
 }
 
-int key_release(int keycode, t_data *data)
+int	key_release(int keycode, t_data *data)
 {
 	if (keycode == KEY_W)
 		data->player->move_forward = 0;
@@ -67,9 +67,11 @@ static void	handle_movement(t_data *data)
 		rotate_player(p, p->rot_speed);
 }
 
-int game_loop(void *param)
+int	game_loop(void *param)
 {
-	t_data *data = (t_data *)param;
+	t_data	*data;
+
+	data = (t_data *)param;
 	handle_movement(data);
 	draw_image(data);
 	return (0);

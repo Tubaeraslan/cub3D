@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 17:38:44 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 18:43:26 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 19:27:45 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	side_ray(t_player *player)
 	if (player->ray_dir_x < 0)
 	{
 		player->step_x = -1;
-		player->side_dist_x = (player->pos_x - player->map_x) * player->delta_dist_x;
+		player->side_dist_x = (player->pos_x - player->map_x)
+			* player->delta_dist_x;
 	}
 	else
 	{
@@ -42,7 +43,8 @@ void	side_ray(t_player *player)
 	if (player->ray_dir_y < 0)
 	{
 		player->step_y = -1;
-		player->side_dist_y = (player->pos_y - player->map_y) * player->delta_dist_y;
+		player->side_dist_y = (player->pos_y - player->map_y)
+			* player->delta_dist_y;
 	}
 	else
 	{
@@ -110,10 +112,9 @@ void	sky_floor(t_skyfloor ts, t_data *data)
 		y++;
 	}
 	y = ts.draw_end;
-	while (y < SCREENHEIGHT)
+	while (y++ < SCREENHEIGHT)
 	{
 		if (ts.x >= 0 && ts.x < SCREENWIDTH && y >= 0 && y < SCREENHEIGHT)
 			ts.img_data[y * (ts.size_line / 4) + ts.x] = ts.ground_color;
-		y++;
 	}
 }

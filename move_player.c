@@ -6,61 +6,99 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 18:14:05 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 18:44:46 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 19:25:07 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	move_player(t_data *data)
+static void	calculate_dir_vector(t_player *p, double *mvx, double *mvy)
 {
-	t_player	*p;
-	double		mvx;
-	double		mvy;
-	double		len;
-	double		newX;
-	double		newY;
-	int			can_move_x;
-	int			can_move_y;
-
-	p = data->player;
-	mvx = 0.0;
-	mvy = 0.0;
+	*mvx = 0.0;
+	*mvy = 0.0;
 	if (p->move_forward)
-		mvx += p->dir_x, mvy += p->dir_y;
+	{
+		*mvx += p->dir_x;
+		*mvy += p->dir_y;
+	}
 	if (p->move_backward)
-		mvx -= p->dir_x, mvy -= p->dir_y;
+	{
+		*mvx -= p->dir_x;
+		*mvy -= p->dir_y;
+	}
 	if (p->move_right)
-		mvx += p->plane_x, mvy += p->plane_y;
+	{
+		*mvx += p->plane_x;
+		*mvy += p->plane_y;
+	}
 	if (p->move_left)
-		mvx -= p->plane_x, mvy -= p->plane_y;
+	{
+		*mvx -= p->plane_x;
+		*mvy -= p->plane_y;
+	}
+}
+
+static t_move	calculate_move(t_player *p)
+{
+	double	mvx;
+	double	mvy;
+	double	len;
+	t_move	move;
+
+	calculate_dir_vector(p, &mvx, &mvy);
 	len = sqrt(mvx * mvx + mvy * mvy);
 	if (len > 0.0)
 	{
 		mvx = mvx / len * p->move_speed;
 		mvy = mvy / len * p->move_speed;
-		newX = p->pos_x + mvx;
-		newY = p->pos_y + mvy;
-		can_move_x = ((int)p->pos_y >= 0 && (int)p->pos_y < data->high &&
-			(int)newX >= 0 && (int)newX < data->widht &&
-			data->char_map[(int)p->pos_y][(int)newX] != '1');
-		can_move_y = ((int)newY >= 0 && (int)newY < data->high &&
-			(int)p->pos_x >= 0 && (int)p->pos_x < data->widht &&
-			data->char_map[(int)newY][(int)p->pos_x] != '1');
-		if (can_move_x && can_move_y)
-			p->pos_x = newX, p->pos_y = newY;
+		move.new_x = p->pos_x + mvx;
+		move.new_y = p->pos_y + mvy;
 	}
+	else
+	{
+		move.new_x = p->pos_x;
+		move.new_y = p->pos_y;
+	}
+	return (move);
+}
+
+static void	try_move(t_data *data, t_player *p, t_move move)
+{
+	int	can_move_x;
+	int	can_move_y;
+
+	can_move_x = ((int)p->pos_y >= 0 && (int)p->pos_y < data->high
+			&& (int)move.new_x >= 0 && (int)move.new_x < data->widht
+			&& data->char_map[(int)p->pos_y][(int)move.new_x] != '1');
+	can_move_y = ((int)move.new_y >= 0 && (int)move.new_y < data->high
+			&& (int)p->pos_x >= 0 && (int)p->pos_x < data->widht
+			&& data->char_map[(int)move.new_y][(int)p->pos_x] != '1');
+	if (can_move_x && can_move_y)
+	{
+		p->pos_x = move.new_x;
+		p->pos_y = move.new_y;
+	}
+}
+
+void	move_player(t_data *data)
+{
+	t_player	*p;
+	t_move		move;
+
+	p = data->player;
+	move = calculate_move(p);
+	try_move(data, p, move);
 }
 
 void	rotate_player(t_player *p, double angle)
 {
-	double	oldDirX;
-	double	oldPlaneX;
+	double	old_dir_x;
+	double	old_plane_x;
 
-	oldDirX = p->dir_x;
+	old_dir_x = p->dir_x;
 	p->dir_x = p->dir_x * cos(angle) - p->dir_y * sin(angle);
-	p->dir_y = oldDirX * sin(angle) + p->dir_y * cos(angle);
-	oldPlaneX = p->plane_x;
+	p->dir_y = old_dir_x * sin(angle) + p->dir_y * cos(angle);
+	old_plane_x = p->plane_x;
 	p->plane_x = p->plane_x * cos(angle) - p->plane_y * sin(angle);
-	p->plane_y = oldPlaneX * sin(angle) + p->plane_y * cos(angle);
+	p->plane_y = old_plane_x * sin(angle) + p->plane_y * cos(angle);
 }
