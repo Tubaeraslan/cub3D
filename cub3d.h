@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 11:56:14 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/22 18:05:32 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 13:29:05 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,15 @@
 
 #define screenWidth 1920
 #define screenHeight 1080
+
+#define KEY_W 119
+#define KEY_S 115
+#define KEY_A 97
+#define KEY_D 100
+#define KEY_LEFT 65361
+#define KEY_RIGHT 65363
+#define KEY_ESC 65307
+
 
 typedef struct s_draw
 {
@@ -91,6 +100,16 @@ typedef struct s_player
 	int side;
 	int player_x;
 	int player_y;
+	/* movement flags */
+    int     move_forward;
+    int     move_backward;
+    int     move_left;
+    int     move_right;
+    int     turn_left;
+    int     turn_right;
+    /* speeds */
+    double  moveSpeed;
+    double  rotSpeed;
 }	t_player;
 
 typedef struct s_map
@@ -165,4 +184,7 @@ void side_ray(t_player *player);
 int rgb_str_to_int(const char *str);
 void ray_measure(int x, int w,t_data *data);
 void sky_floor(t_skyfloor ts,t_data *data);
+int key_press(int keycode, t_data *data);
+int key_release(int keycode, t_data *data);
+int game_loop(void *param);
 #endif

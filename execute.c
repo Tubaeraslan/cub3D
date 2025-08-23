@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:47:21 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/22 18:16:31 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 13:28:02 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,15 @@ void	player_position(t_player *player)
 	player->planeY = player->dirX * tan(fov / 2);
 }
 
-void	ready_mlx(t_data *data)
+void ready_mlx(t_data *data)
 {
-	data->mlx = mlx_init();
-	data->win = mlx_new_window(data->mlx, screenWidth, screenHeight, "cub3d");
-	mlx_hook(data->win, 2, 1L << 0, key_hook, data);
-	mlx_hook(data->win, 17, 0, exit_program, data);
+    data->mlx = mlx_init();
+    data->win = mlx_new_window(data->mlx, screenWidth, screenHeight, "cub3d");
+    /* press and release handlers + close + per-frame loop */
+    mlx_hook(data->win, 2, 1L << 0, key_press, data);
+    mlx_hook(data->win, 3, 1L << 1, key_release, data);
+    mlx_hook(data->win, 17, 0, exit_program, data);
+    mlx_loop_hook(data->mlx, game_loop, data);
 }
 
 void	load_textures(t_data *data)
@@ -81,6 +84,8 @@ void	load_textures(t_data *data)
 void	execute(t_data *data)
 {
 	player_position(data->player);
+	data->player->moveSpeed = 0.10;
+    data->player->rotSpeed = 0.06;
 	ready_mlx(data);
 	load_textures(data);
 	draw_image(data);
