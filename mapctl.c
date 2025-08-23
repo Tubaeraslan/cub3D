@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 12:43:31 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/22 15:52:31 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 18:40:25 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void find_player_position(char **map, t_data *data)
         {
             if (map[x][y] == data->player->start_pos)
             {
-                data->player->mapX = x;
-                data->player->mapY = y;
+                data->player->map_x = x;
+                data->player->map_y = y;
                 return;
             }
             y++;
@@ -119,7 +119,7 @@ int check_map(char **av, t_data *data)
 	list_to_char(data);
 	find_player_position(data->char_map, data);
 	data->fakemap = copy_char_matrix(data->char_map);
-	if (flood_fill(data->player->mapY, data->player->mapX, data))
+	if (flood_fill(data->player->map_y, data->player->map_x, data))
     	return (printf("Error\nInvalid map\n"), 0);
 	// int i = 0;
 	// while (data->fakemap[i])

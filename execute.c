@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:47:21 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 13:28:02 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 18:44:14 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,37 +19,36 @@ void	player_position(t_player *player)
 	fov = 66.0 * M_PI / 180.0;
 	if (player->start_pos == 'N')
 	{
-		player->dirX = 0;
-		player->dirY = -1;
+		player->dir_x = 0;
+		player->dir_y = -1;
 	}
 	else if (player->start_pos == 'S')
 	{
-		player->dirX = 0;
-		player->dirY = 1;
+		player->dir_x = 0;
+		player->dir_y = 1;
 	}
 	else if (player->start_pos == 'E')
 	{
-		player->dirX = 1;
-		player->dirY = 0;
+		player->dir_x = 1;
+		player->dir_y = 0;
 	}
 	else if (player->start_pos == 'W')
 	{
-		player->dirX = -1;
-		player->dirY = 0;
+		player->dir_x = -1;
+		player->dir_y = 0;
 	}
-	player->planeX = -player->dirY * tan(fov / 2);
-	player->planeY = player->dirX * tan(fov / 2);
+	player->plane_x = -player->dir_y * tan(fov / 2);
+	player->plane_y = player->dir_x * tan(fov / 2);
 }
 
-void ready_mlx(t_data *data)
+void	ready_mlx(t_data *data)
 {
-    data->mlx = mlx_init();
-    data->win = mlx_new_window(data->mlx, screenWidth, screenHeight, "cub3d");
-    /* press and release handlers + close + per-frame loop */
-    mlx_hook(data->win, 2, 1L << 0, key_press, data);
-    mlx_hook(data->win, 3, 1L << 1, key_release, data);
-    mlx_hook(data->win, 17, 0, exit_program, data);
-    mlx_loop_hook(data->mlx, game_loop, data);
+	data->mlx = mlx_init();
+	data->win = mlx_new_window(data->mlx, SCREENWIDTH, SCREENHEIGHT, "cub3d");
+	mlx_hook(data->win, 2, 1L << 0, key_press, data);
+	mlx_hook(data->win, 3, 1L << 1, key_release, data);
+	mlx_hook(data->win, 17, 0, exit_program, data);
+	mlx_loop_hook(data->mlx, game_loop, data);
 }
 
 void	load_textures(t_data *data)
@@ -84,8 +83,8 @@ void	load_textures(t_data *data)
 void	execute(t_data *data)
 {
 	player_position(data->player);
-	data->player->moveSpeed = 0.10;
-    data->player->rotSpeed = 0.06;
+	data->player->move_speed = 0.10;
+	data->player->rot_speed = 0.06;
 	ready_mlx(data);
 	load_textures(data);
 	draw_image(data);
