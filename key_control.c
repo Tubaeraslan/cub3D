@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 13:28:15 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 19:16:38 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 19:40:10 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	exit_program(t_data *data)
 {
-	(void)data;
+	free_mlx(data);
+	free_data(data);
 	exit(0);
 	return (0);
 }

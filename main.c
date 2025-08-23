@@ -6,11 +6,28 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 11:55:12 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/23 18:33:11 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 19:42:39 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	free_mlx(t_data *data)
+{
+	if (data->north.img)
+		mlx_destroy_image(data->mlx, data->north.img);
+	if (data->south.img)
+		mlx_destroy_image(data->mlx, data->south.img);
+	if (data->east.img)
+		mlx_destroy_image(data->mlx, data->east.img);
+	if (data->west.img)
+		mlx_destroy_image(data->mlx, data->west.img);
+	if (data->win)
+		mlx_destroy_window(data->mlx, data->win);
+	if (data->mlx)
+		mlx_destroy_display(data->mlx);
+	free(data->mlx);
+}
 
 void	set_player_position_from_map(t_data *data)
 {

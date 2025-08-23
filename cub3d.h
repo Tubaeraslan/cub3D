@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 11:56:14 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/23 19:24:46 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 19:37:48 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,4 +185,5 @@ int			key_release(int keycode, t_data *data);
 int			game_loop(void *param);
 void		move_player(t_data *data);
 void		rotate_player(t_player *p, double angle);
+void		free_mlx(t_data *data);
 #endif
