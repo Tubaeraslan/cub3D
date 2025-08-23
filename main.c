@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 11:55:12 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/22 17:45:18 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 17:18:25 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int main(int ac, char **av)
     if (ac != 2)
 		  return (write(1, "Error\nNumber of wrong arguments\n", 32), 0);
     t_data *data;
-    data = malloc(sizeof(t_data));
-    data->feature = malloc(sizeof(t_feature));
-    data->player = malloc(sizeof(t_player));
+    data = ft_calloc(1, sizeof(t_data));
+    data->feature = ft_calloc(1, sizeof(t_feature));
+    data->player = ft_calloc(1, sizeof(t_player));
     if (!check_map(av, data))
-		  return (0);
+		  return (free_data(data),0);
 	// int map_width = 62;
 	// int map_height = 27;
 	// data->widht = map_width;
@@ -53,5 +53,6 @@ int main(int ac, char **av)
 	data->text_width = 0;
 	data->text_height = 0;
     execute(data);
+    free_data(data);
     return(0);
 }

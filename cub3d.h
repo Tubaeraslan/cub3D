@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 11:56:14 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/23 13:29:05 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 17:34:17 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ typedef struct s_player
     /* speeds */
     double  moveSpeed;
     double  rotSpeed;
+	// double rayAngle;
+	// double playerAngle;
 }	t_player;
 
 typedef struct s_map

@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 17:38:44 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/22 18:19:06 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 17:34:14 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,10 @@ void ray_measure(int x, int w,t_data *data)
 	cameraX = 2 * (double)x / (double)w - 1.0;
 	data->player->rayDirX = data->player->dirX + data->player->planeX * cameraX;
 	data->player->rayDirY = data->player->dirY + data->player->planeY * cameraX;
+	// double rayAngle = atan2(data->player->rayDirY, data->player->rayDirX);
+	// double playerAngle = atan2(data->player->dirY, data->player->dirX);
+	// data->player->rayAngle = rayAngle;
+	// data->player->playerAngle = playerAngle;
 }
 
 void sky_floor(t_skyfloor ts,t_data *data)
