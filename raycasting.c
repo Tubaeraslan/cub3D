@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:48:29 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 19:34:57 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 19:46:35 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	ready_ts(t_skyfloor *ts, t_draw *draw)
 	ts->draw_end = draw->draw_end;
 }
 
-static void	render_column(t_data *data, int x, int *img_data, int size_line)
+static void	raycast_column(t_data *data, int x, int *img_data, int size_line)
 {
 	double		wall_dist;
 	t_draw		draw;
@@ -54,7 +54,7 @@ static void	raycasting(t_data *data, int *img_data, int size_line)
 	x = 0;
 	while (x < SCREENWIDTH)
 	{
-		render_column(data, x, img_data, size_line);
+		raycast_column(data, x, img_data, size_line);
 		x++;
 	}
 }

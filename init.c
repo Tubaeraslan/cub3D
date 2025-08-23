@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 00:00:09 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/22 14:41:03 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 19:48:56 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ int	is_feature(char *line, t_data *data)
 int is_map(char *line, t_data *data)
 {
     int i ;
-	i = 0;
+    i = 0;
+    if(!data->feature->c || !data->feature->f || !data->feature->ea
+        || !data->feature->no || !data->feature->so || !data->feature->we)
+        return(0);
     while (line[i])
     {
         if (line[i] == '1' || line[i] == '0' || jumper(line[i]))
