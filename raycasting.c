@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:48:29 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/22 18:19:15 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/23 17:43:45 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void raycasting(t_data *data, int *img_data, int size_line)
 		side_ray(data->player);
 		dda_algorithm(data);
 		wall_dist = find_wall_distance(data->player);
+		if (wall_dist < 0.3)
+            wall_dist = 0.3;
 		draw.drawStart = -((int)(screenHeight / wall_dist)) / 2 + screenHeight / 2;
 		if (draw.drawStart < 0)
 			draw.drawStart = 0;
