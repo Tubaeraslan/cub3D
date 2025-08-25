@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:47:43 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 18:49:11 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/25 12:29:52 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	dda_algorithm(t_data *data)
 
 	data->player->hit = 0;
 	limit = 0;
-	while (data->player->hit == 0 && limit++ < 1000)
+	while (data->player->hit == 0)
 	{
 		if (data->player->side_dist_x < data->player->side_dist_y)
 		{
