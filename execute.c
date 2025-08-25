@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: skaynar <skaynar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:47:21 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 18:44:14 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/24 21:27:48 by skaynar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,14 @@ void	load_textures(t_data *data)
 			&data->south.width, &data->south.height);
 	data->south.addr = (int *)mlx_get_data_addr(data->south.img,
 			&data->south.bpp, &data->south.size_line, &data->south.endian);
-	data->east.img = mlx_xpm_file_to_image(data->mlx, east,
-			&data->east.width, &data->east.height);
-	data->east.addr = (int *)mlx_get_data_addr(data->east.img,
-			&data->east.bpp, &data->east.size_line, &data->east.endian);
-	data->west.img = mlx_xpm_file_to_image(data->mlx, west,
-			&data->west.width, &data->west.height);
-	data->west.addr = (int *)mlx_get_data_addr(data->west.img,
-			&data->west.bpp, &data->west.size_line, &data->west.endian);
+	data->east.img = mlx_xpm_file_to_image(data->mlx, east, &data->east.width,
+			&data->east.height);
+	data->east.addr = (int *)mlx_get_data_addr(data->east.img, &data->east.bpp,
+			&data->east.size_line, &data->east.endian);
+	data->west.img = mlx_xpm_file_to_image(data->mlx, west, &data->west.width,
+			&data->west.height);
+	data->west.addr = (int *)mlx_get_data_addr(data->west.img, &data->west.bpp,
+			&data->west.size_line, &data->west.endian);
 }
 
 void	execute(t_data *data)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: skaynar <skaynar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 11:55:12 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/23 19:42:39 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/24 21:36:36 by skaynar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void	set_player_position_from_map(t_data *data)
 		x = 0;
 		while (data->char_map[y][x])
 		{
-			if (data->char_map[y][x] == 'N' || data->char_map[y][x] == 'S' ||
-				data->char_map[y][x] == 'E' || data->char_map[y][x] == 'W')
+			if (data->char_map[y][x] == 'N' || data->char_map[y][x] == 'S'
+				|| data->char_map[y][x] == 'E' || data->char_map[y][x] == 'W')
 			{
 				data->player->pos_x = x + 0.5;
 				data->player->pos_y = y + 0.5;
@@ -65,12 +65,12 @@ int	main(int ac, char **av)
 	data->feature = ft_calloc(1, sizeof(t_feature));
 	data->player = ft_calloc(1, sizeof(t_player));
 	if (!check_map(av, data))
-		return (free_data(data), 0);
+		return (free_data(data, 0), 0);
 	data->player->hit = 0;
 	set_player_position_from_map(data);
 	data->text_width = 0;
 	data->text_height = 0;
 	execute(data);
-	free_data(data);
+	free_data(data, 0);
 	return (0);
 }

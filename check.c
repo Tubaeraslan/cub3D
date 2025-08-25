@@ -6,7 +6,7 @@
 /*   By: skaynar <skaynar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 23:58:38 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/21 18:36:04 by skaynar          ###   ########.fr       */
+/*   Updated: 2025/08/24 21:44:01 by skaynar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ int	check_map_name(char *str)
 	return (printf("Error\n"), 0);
 }
 
-char  *namectl(char *xpm)
+char	*namectl(char *xpm)
 {
-	int	len;
-	char *path;
+	int		len;
+	char	*path;
 
-    path = ft_strtrim(xpm, " \n\t");
+	path = ft_strtrim(xpm, " \n\t");
 	len = ft_strlen(path);
 	if (len > 4)
 	{
@@ -39,43 +39,40 @@ char  *namectl(char *xpm)
 			&& path[len - 4] == '.')
 			return (path);
 	}
-	return (free(path) ,NULL);
+	return (free(path), NULL);
 }
 
-int is_exe(char *str)
+int	is_exe(char *str)
 {
-    char  **split;
-    char  *path;
-    int   i;
-	int j;
+	char	**split;
+	char	*path;
+	int		i;
+	int		j;
 
-    split = ft_split(str, ' ');
-    i = -1;
-    while (split[++i])
-    {
-		if(i > 1)
+	split = ft_split(str, ' ');
+	i = -1;
+	while (split[++i])
+	{
+		if (i > 1)
 		{
 			j = -1;
-			while(split[i][++j])
+			while (split[i][++j])
 			{
-				if(!jumper(split[i][j]))
-					return(1);
+				if (!jumper(split[i][j]))
+					return (1);
 			}
 		}
 	}
-    path = namectl(split[1]);
-    i = open(path, O_RDONLY);
-    if (i < 0)
-        return (clear_array(split),free(path),1);
-    return (close(i),clear_array(split),free(path),0);
+	path = namectl(split[1]);
+	i = open(path, O_RDONLY);
+	if (i < 0)
+		return (clear_array(split), free(path), 1);
+	return (close(i), clear_array(split), free(path), 0);
 }
 
-int is_truedigit(char *line)
+int	is_truedigit(char *line, int val, int i, int count)
 {
-	int		count;
-	int		val;
 	char	**split;
-	int		i;
 
 	if (!line)
 		return (0);
@@ -88,18 +85,15 @@ int is_truedigit(char *line)
 	split = ft_split(line, ',');
 	if (!split)
 		return (0);
-	count = 0;
 	while (split[count])
 		count++;
 	if (count != 3)
 		return (clear_array(split), 0);
-	i = 0;
-	while (i < 3)
+	while (++i < 3)
 	{
 		val = rgb_atoi(split[i]);
 		if (val < 0 || val > 255)
 			return (clear_array(split), 0);
-		i++;
 	}
 	clear_array(split);
 	return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: skaynar <skaynar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 17:38:44 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 19:27:45 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/24 21:28:20 by skaynar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ void	ray_measure(int x, int w, t_data *data)
 	double	camera_x;
 
 	camera_x = 2 * (double)x / (double)w - 1.0;
-	data->player->ray_dir_x = data->player->dir_x
-		+ data->player->plane_x * camera_x;
-	data->player->ray_dir_y = data->player->dir_y
-		+ data->player->plane_y * camera_x;
+	data->player->ray_dir_x = data->player->dir_x + data->player->plane_x
+		* camera_x;
+	data->player->ray_dir_y = data->player->dir_y + data->player->plane_y
+		* camera_x;
 }
 
 void	sky_floor(t_skyfloor ts, t_data *data)

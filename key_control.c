@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_control.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: skaynar <skaynar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 13:28:15 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 19:40:10 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/24 21:36:29 by skaynar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	exit_program(t_data *data)
 {
 	free_mlx(data);
-	free_data(data);
+	free_data(data, 0);
 	exit(0);
 	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 18:14:05 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 19:25:07 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/25 12:55:41 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	calculate_dir_vector(t_player *p, double *mvx, double *mvy)
+static void	calculate_vector(t_player *p, double *mvx, double *mvy)
 {
 	*mvx = 0.0;
 	*mvy = 0.0;
@@ -45,7 +45,7 @@ static t_move	calculate_move(t_player *p)
 	double	len;
 	t_move	move;
 
-	calculate_dir_vector(p, &mvx, &mvy);
+	calculate_vector(p, &mvx, &mvy);
 	len = sqrt(mvx * mvx + mvy * mvy);
 	if (len > 0.0)
 	{

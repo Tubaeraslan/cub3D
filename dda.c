@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:47:43 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/25 12:29:52 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/25 12:34:41 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static t_texture	*setup_texture(t_data *data, t_draw draw, t_tex_calc *calc)
 
 	tex = choose_texture(data);
 	if (!tex || !tex->img || !tex->addr)
-		return (printf("[ERROR] draw_wall_line: Seçilen texture NULL!\n"), NULL);
+		return (printf("[ERROR] draw_wall_line: Seçilen texture NULL!\n"),
+			NULL);
 	if (data->player->side == 0)
 		wall_x = data->player->pos_y + draw.wall_dist * data->player->ray_dir_y;
 	else
@@ -32,8 +33,8 @@ static t_texture	*setup_texture(t_data *data, t_draw draw, t_tex_calc *calc)
 		calc->tex_x = tex->width - calc->tex_x - 1;
 	line_height = (int)(SCREENHEIGHT / draw.wall_dist);
 	calc->step = 1.0 * tex->height / line_height;
-	calc->tex_pos = (draw.draw_start - SCREENHEIGHT
-			/ 2 + line_height / 2) * calc->step;
+	calc->tex_pos = (draw.draw_start - SCREENHEIGHT / 2 + line_height / 2)
+		* calc->step;
 	return (tex);
 }
 
@@ -51,8 +52,9 @@ void	draw_wall_line(t_data *data, int *img_data, int line, t_draw draw)
 	y = draw.draw_start;
 	while (y < draw.draw_end)
 	{
-		img_data[y * (line / 4) + draw.x] = tex_data[((int)calc.tex_pos
-				& (tex->height - 1)) * tex->width + calc.tex_x];
+		img_data[y * (line / 4)
+			+ draw.x] = tex_data[((int)calc.tex_pos & (tex->height - 1))
+			* tex->width + calc.tex_x];
 		calc.tex_pos += calc.step;
 		y++;
 	}
@@ -61,19 +63,16 @@ void	draw_wall_line(t_data *data, int *img_data, int line, t_draw draw)
 double	find_wall_distance(t_player *player)
 {
 	if (player->side == 0)
-		return ((player->map_x - player->pos_x
-				+ (1 - player->step_x) / 2.0) / player->ray_dir_x);
+		return ((player->map_x - player->pos_x + (1 - player->step_x) / 2.0)
+			/ player->ray_dir_x);
 	else
-		return ((player->map_y - player->pos_y
-				+ (1 - player->step_y) / 2.0) / player->ray_dir_y);
+		return ((player->map_y - player->pos_y + (1 - player->step_y) / 2.0)
+			/ player->ray_dir_y);
 }
 
 void	dda_algorithm(t_data *data)
 {
-	int	limit;
-
 	data->player->hit = 0;
-	limit = 0;
 	while (data->player->hit == 0)
 	{
 		if (data->player->side_dist_x < data->player->side_dist_y)
@@ -90,7 +89,7 @@ void	dda_algorithm(t_data *data)
 		}
 		if (data->player->map_y < 0 || data->player->map_y >= data->high
 			|| data->player->map_x < 0 || data->player->map_x >= data->widht
-			||data->char_map[data->player->map_y][data->player->map_x] == '1')
+			|| data->char_map[data->player->map_y][data->player->map_x] == '1')
 			data->player->hit = 1;
 	}
 }

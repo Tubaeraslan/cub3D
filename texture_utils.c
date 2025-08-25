@@ -6,34 +6,34 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:48:55 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/23 18:38:55 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/25 16:53:24 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	strip_trailing_whitespace(char *str)
+void	strip_whitespace(char *str)
 {
 	int	len;
 
 	if (!str)
 		return ;
 	len = ft_strlen(str);
-	while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\n'
-			|| str[len - 1] == '\r' || str[len - 1] == '\t'))
+	while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\n' || str[len
+				- 1] == '\r' || str[len - 1] == '\t'))
 		str[--len] = '\0';
 }
 
 char	*parse_texture_path(char *path, const char *prefix)
 {
-	if (path && (strncmp(path, prefix, 3) == 0
-			|| strncmp(path, prefix, 3) == 0))
+	if (path && (ft_strncmp(path, prefix, 3) == 0 || ft_strncmp(path, prefix,
+				3) == 0))
 		path += 3;
 	while (path && *path == ' ')
 		path++;
 	while (path && *path == ' ')
 		path++;
-	strip_trailing_whitespace(path);
+	strip_whitespace(path);
 	return (path);
 }
 
