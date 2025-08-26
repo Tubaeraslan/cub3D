@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skaynar <skaynar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:47:21 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/24 21:27:48 by skaynar          ###   ########.fr       */
+/*   Updated: 2025/08/26 13:17:22 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void	load_textures(t_data *data)
 	char	*east;
 	char	*west;
 
-	north = parse_texture_path(data->feature->no, "NO ");
-	south = parse_texture_path(data->feature->so, "SO ");
-	east = parse_texture_path(data->feature->ea, "EA ");
-	west = parse_texture_path(data->feature->we, "WE ");
+	north = parse_texture_path(data->feature->no, "NO");
+	south = parse_texture_path(data->feature->so, "SO");
+	east = parse_texture_path(data->feature->ea, "EA");
+	west = parse_texture_path(data->feature->we, "WE");
 	data->north.img = mlx_xpm_file_to_image(data->mlx, north,
 			&data->north.width, &data->north.height);
 	data->north.addr = (int *)mlx_get_data_addr(data->north.img,
