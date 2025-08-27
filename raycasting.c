@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:48:29 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/25 18:28:32 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/27 14:40:18 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	draw_image(t_data *data)
 	img = mlx_new_image(data->mlx, SCREENWIDTH, SCREENHEIGHT);
 	if (!img)
 	{
-		fprintf(stderr, "[ERROR] Image buffer olusturulamadi!\n");
+		printf("Error\n Image buffer!\n");
 		return ;
 	}
 	img_data = (int *)mlx_get_data_addr(img, &bpp, &size_line, &endian);

@@ -6,7 +6,7 @@
 /*   By: skaynar <skaynar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 23:58:38 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/26 11:36:07 by skaynar          ###   ########.fr       */
+/*   Updated: 2025/08/24 21:44:01 by skaynar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,55 +42,33 @@ char	*namectl(char *xpm)
 	return (free(path), NULL);
 }
 
-int is_exe(char *str)
+int	is_exe(char *str)
 {
-	int		i;
-	int		start;
+	char	**split;
 	char	*path;
-	char 	*new;
+	int		i;
+	int		j;
 
-	i = 0;
-	while (str[i] && jumper(str[i]))
-		i++;
-	if (!str[i] || !ft_isalpha(str[i]))
-		return (1);
-	i += 2;
-	if (!str[i])
-		return (1);
-	while (str[i] && jumper(str[i]))
-		i++;
-	if (str[i] && !jumper(str[i]))
+	split = ft_split(str, ' ');
+	i = -1;
+	while (split[++i])
 	{
-		start = i;
-		while (str[i] && !jumper(str[i]))
-			i++;
-		path = ft_substr(str, start, i - start);
-		new = namectl(path);
-		start = open(new, O_RDONLY);
-		if (start < 0)
-			return (free(new), 1);
+		if (i > 1)
+		{
+			j = -1;
+			while (split[i][++j])
+			{
+				if (!jumper(split[i][j]))
+					return (1);
+			}
+		}
 	}
-	while (str[i] && jumper(str[i]))
-		i++;
-	if (str[i] && !jumper(str[i]))
-		return (1);
-	return (0);
+	path = namectl(split[1]);
+	i = open(path, O_RDONLY);
+	if (i < 0)
+		return (clear_array(split), free(path), 1);
+	return (close(i), clear_array(split), free(path), 0);
 }
-
-
-// int	is_exe(char *str)
-// {
-// 	char	*path;
-// 	int		i;
-
-// 	i = 0;
-	
-// 	path = namectl(exe);
-// 	i = open(path, O_RDONLY);
-// 	if (i < 0)
-// 		return (free(path), 1);
-// 	return (close(i), free(path), 0);
-// }
 
 int	is_truedigit(char *line, int val, int i, int count)
 {

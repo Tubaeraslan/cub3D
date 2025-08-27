@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:47:43 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/25 12:34:41 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/27 14:17:57 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_texture	*setup_texture(t_data *data, t_draw draw, t_tex_calc *calc)
 
 	tex = choose_texture(data);
 	if (!tex || !tex->img || !tex->addr)
-		return (printf("[ERROR] draw_wall_line: Seçilen texture NULL!\n"),
+		return (printf("ERROR\nTexture Error\n"),
 			NULL);
 	if (data->player->side == 0)
 		wall_x = data->player->pos_y + draw.wall_dist * data->player->ray_dir_y;

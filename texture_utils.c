@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 13:48:55 by teraslan          #+#    #+#             */
-/*   Updated: 2025/08/26 13:22:49 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/25 16:53:24 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,15 @@ void	strip_whitespace(char *str)
 
 char	*parse_texture_path(char *path, const char *prefix)
 {
-	int	i;
-
-	if (!path || !prefix)
-		return (NULL);
-	i = 0;
-	if (ft_strncmp(path, prefix, ft_strlen(prefix)) == 0)
-		i += ft_strlen(prefix);
-	while (jumper(path[i]))
-		i++;
-	strip_whitespace(path + i);
-	return (path + i);
+	if (path && (ft_strncmp(path, prefix, 3) == 0 || ft_strncmp(path, prefix,
+				3) == 0))
+		path += 3;
+	while (path && *path == ' ')
+		path++;
+	while (path && *path == ' ')
+		path++;
+	strip_whitespace(path);
+	return (path);
 }
 
 t_texture	*choose_texture(t_data *data)
