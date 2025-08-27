@@ -6,7 +6,7 @@
 /*   By: teraslan <teraslan@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 12:43:31 by skaynar           #+#    #+#             */
-/*   Updated: 2025/08/27 14:43:04 by teraslan         ###   ########.fr       */
+/*   Updated: 2025/08/27 15:16:25 by teraslan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ int	check_map(char **av, t_data *data)
 	if (fd == -1)
 		return (close(fd), printf("Error\nCould not open map file\n"), 0);
 	if (!is_true_map(data, fd))
+		return (0);
+	if (!feature_ctl(data))
 		return (0);
 	if (itelim(data))
 		return (0);
